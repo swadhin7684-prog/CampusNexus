@@ -2941,7 +2941,45 @@ Exam soft penalty: 0
                 </div>
                 <div class="form-group">
                   <label class="form-label">Venue</label>
-                  <select id="mbRoom" class="form-control"></select>
+                  <select id="mbRoom" class="form-control" required>
+                    <optgroup label="── Auditoriums & Special Venues ──">
+                      <option value="AUD">Main Auditorium (AUD) — Cap: 500 [AUDITORIUM]</option>
+                      <option value="OAT">Open Air Theatre (OAT) — Cap: 800 [OUTDOOR]</option>
+                      <option value="SH-1">Seminar Hall 1 (SH-1) — Cap: 150 [SEMINAR HALL]</option>
+                      <option value="SH-2">Seminar Hall 2 (SH-2) — Cap: 100 [SEMINAR HALL]</option>
+                      <option value="LH-1">Lecture Hall 1 (LH-1) — Cap: 200 [LECTURE HALL]</option>
+                      <option value="LH-2">Lecture Hall 2 (LH-2) — Cap: 200 [LECTURE HALL]</option>
+                    </optgroup>
+                    <optgroup label="── Lecture Halls (120 Capacity) ──">
+                      <option value="LH-3">Lecture Hall 3 (LH-3) — Cap: 120 [LECTURE HALL]</option>
+                      <option value="LH-4">Lecture Hall 4 (LH-4) — Cap: 120 [LECTURE HALL]</option>
+                      <option value="LH-5">Lecture Hall 5 (LH-5) — Cap: 120 [LECTURE HALL]</option>
+                      <option value="LH-6">Lecture Hall 6 (LH-6) — Cap: 120 [LECTURE HALL]</option>
+                    </optgroup>
+                    <optgroup label="── Academic Wing A (Classrooms) ──">
+                      <option value="CR-101">Classroom A-101 (CR-101) — Cap: 90 [CLASSROOM]</option>
+                      <option value="CR-102">Classroom A-102 (CR-102) — Cap: 90 [CLASSROOM]</option>
+                      <option value="CR-103">Classroom A-103 (CR-103) — Cap: 80 [CLASSROOM]</option>
+                      <option value="CR-104">Classroom A-104 (CR-104) — Cap: 80 [CLASSROOM]</option>
+                      <option value="CR-105">Classroom A-105 (CR-105) — Cap: 70 [CLASSROOM]</option>
+                    </optgroup>
+                    <optgroup label="── Academic Wing B (Classrooms) ──">
+                      <option value="CR-201">Classroom B-201 (CR-201) — Cap: 90 [CLASSROOM]</option>
+                      <option value="CR-202">Classroom B-202 (CR-202) — Cap: 80 [CLASSROOM]</option>
+                      <option value="CR-203">Classroom B-203 (CR-203) — Cap: 80 [CLASSROOM]</option>
+                      <option value="CR-204">Classroom B-204 (CR-204) — Cap: 70 [CLASSROOM]</option>
+                      <option value="CR-205">Classroom B-205 (CR-205) — Cap: 60 [CLASSROOM]</option>
+                    </optgroup>
+                    <optgroup label="── Specialized Labs & Workshops ──">
+                      <option value="CS-LAB-1">Computing Lab 1 (CS-LAB-1) — Cap: 90 [LAB CS]</option>
+                      <option value="CS-LAB-2">Computing Lab 2 (CS-LAB-2) — Cap: 90 [LAB CS]</option>
+                      <option value="ELEC-LAB-1">Electronics Lab 1 (ELEC-LAB-1) — Cap: 80 [LAB ELEC]</option>
+                      <option value="ELEC-LAB-2">Electronics Lab 2 (ELEC-LAB-2) — Cap: 80 [LAB ELEC]</option>
+                      <option value="PHY-LAB">Physics Lab (PHY-LAB) — Cap: 90 [LAB PHY]</option>
+                      <option value="MECH-WS">Central Workshop (MECH-WS) — Cap: 90 [WORKSHOP]</option>
+                      <option value="CIVIL-LAB">Civil Engineering Lab (CIVIL-LAB) — Cap: 60 [LAB CIVIL]</option>
+                    </optgroup>
+                  </select>
                 </div>
               </div>
 
@@ -6645,6 +6683,8 @@ let HERO_GRID_INSTANCE = null;
         if (typeof renderFacultyDirectory === 'function') renderFacultyDirectory();
       } else if (viewId === 'rooms') {
         if (typeof loadRoomUtilisation === 'function') loadRoomUtilisation();
+      } else if (viewId === 'manual_booking') {
+        if (typeof populateManualRoomSelect === 'function') populateManualRoomSelect();
       }
     }
 
@@ -7579,17 +7619,77 @@ let HERO_GRID_INSTANCE = null;
     }
 
 
-    // Manual Event Booking
+    // 27 Standard CIT Venues (Public Dataset cit_public.json)
+    const CIT_MASTER_ROOMS = [
+      { id: "AUD", name: "Main Auditorium", type: "auditorium", capacity: 500 },
+      { id: "OAT", name: "Open Air Theatre", type: "outdoor", capacity: 800 },
+      { id: "SH-1", name: "Seminar Hall 1", type: "seminar_hall", capacity: 150 },
+      { id: "SH-2", name: "Seminar Hall 2", type: "seminar_hall", capacity: 100 },
+      { id: "LH-1", name: "Lecture Hall 1", type: "lecture_hall", capacity: 200 },
+      { id: "LH-2", name: "Lecture Hall 2", type: "lecture_hall", capacity: 200 },
+      { id: "LH-3", name: "Lecture Hall 3", type: "lecture_hall", capacity: 120 },
+      { id: "LH-4", name: "Lecture Hall 4", type: "lecture_hall", capacity: 120 },
+      { id: "LH-5", name: "Lecture Hall 5", type: "lecture_hall", capacity: 120 },
+      { id: "LH-6", name: "Lecture Hall 6", type: "lecture_hall", capacity: 120 },
+      { id: "CR-101", name: "Classroom A-101", type: "classroom", capacity: 90 },
+      { id: "CR-102", name: "Classroom A-102", type: "classroom", capacity: 90 },
+      { id: "CR-103", name: "Classroom A-103", type: "classroom", capacity: 80 },
+      { id: "CR-104", name: "Classroom A-104", type: "classroom", capacity: 80 },
+      { id: "CR-105", name: "Classroom A-105", type: "classroom", capacity: 70 },
+      { id: "CR-201", name: "Classroom B-201", type: "classroom", capacity: 90 },
+      { id: "CR-202", name: "Classroom B-202", type: "classroom", capacity: 80 },
+      { id: "CR-203", name: "Classroom B-203", type: "classroom", capacity: 80 },
+      { id: "CR-204", name: "Classroom B-204", type: "classroom", capacity: 70 },
+      { id: "CR-205", name: "Classroom B-205", type: "classroom", capacity: 60 },
+      { id: "CS-LAB-1", name: "Computing Lab 1", type: "lab_cs", capacity: 90 },
+      { id: "CS-LAB-2", name: "Computing Lab 2", type: "lab_cs", capacity: 90 },
+      { id: "ELEC-LAB-1", name: "Electronics Lab 1", type: "lab_elec", capacity: 80 },
+      { id: "ELEC-LAB-2", name: "Electronics Lab 2", type: "lab_elec", capacity: 80 },
+      { id: "PHY-LAB", name: "Physics Lab", type: "lab_phy", capacity: 90 },
+      { id: "MECH-WS", name: "Central Workshop", type: "workshop", capacity: 90 },
+      { id: "CIVIL-LAB", name: "Civil Engineering Lab", type: "lab_civil", capacity: 60 }
+    ];
+
+    // Manual Event Booking Venue Populator
     function populateManualRoomSelect() {
       const sel = document.getElementById("mbRoom");
+      if (!sel) return;
+      const currentVal = sel.value;
+      const rooms = (APP.overview && APP.overview.rooms && APP.overview.rooms.length > 0)
+        ? APP.overview.rooms
+        : CIT_MASTER_ROOMS;
+
+      if (!rooms || rooms.length === 0) return;
+
+      const groups = {
+        "Auditoriums & Special Venues": ["AUD", "OAT", "SH-1", "SH-2", "LH-1", "LH-2"],
+        "Lecture Halls (120 Capacity)": ["LH-3", "LH-4", "LH-5", "LH-6"],
+        "Academic Wing A (Classrooms)": ["CR-101", "CR-102", "CR-103", "CR-104", "CR-105"],
+        "Academic Wing B (Classrooms)": ["CR-201", "CR-202", "CR-203", "CR-204", "CR-205"],
+        "Specialized Labs & Workshops": ["CS-LAB-1", "CS-LAB-2", "ELEC-LAB-1", "ELEC-LAB-2", "PHY-LAB", "MECH-WS", "CIVIL-LAB"]
+      };
+
       sel.innerHTML = "";
-      if (APP.overview && APP.overview.rooms) {
-        APP.overview.rooms.forEach(r => {
-          const opt = document.createElement("option");
-          opt.value = r.id;
-          opt.innerText = `${r.name} (${r.type}, Cap: ${r.capacity})`;
-          sel.appendChild(opt);
+      for (const [groupName, roomIds] of Object.entries(groups)) {
+        const optGroup = document.createElement("optgroup");
+        optGroup.label = `── ${groupName} ──`;
+        roomIds.forEach(rid => {
+          const r = rooms.find(item => item.id === rid);
+          if (r) {
+            const opt = document.createElement("option");
+            opt.value = r.id;
+            const typeStr = (r.type || "").replace('_', ' ').toUpperCase();
+            opt.innerText = `${r.name} (${r.id}) — Cap: ${r.capacity} [${typeStr}]`;
+            optGroup.appendChild(opt);
+          }
         });
+        if (optGroup.children.length > 0) {
+          sel.appendChild(optGroup);
+        }
+      }
+
+      if (currentVal && Array.from(sel.options).some(o => o.value === currentVal)) {
+        sel.value = currentVal;
       }
     }
 
