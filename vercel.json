@@ -1,5 +1,10 @@
 {
   "version": 2,
+  "functions": {
+    "api/index.py": {
+      "includeFiles": "frontend/**,backend/data/**,exports/**,cit_public.json"
+    }
+  },
   "rewrites": [
     {
       "source": "/(.*)",

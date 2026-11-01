@@ -92,46 +92,118 @@ def load_initial_state(force_pristine: bool = False):
         except Exception:
             pass
 
-    with open(DATA_PATH, "r", encoding="utf-8") as f:
-        STATE["data"] = json.load(f)
+    # 1. Safe Dataset Loading with multiple fallback paths
+    data_loaded = False
+    data_candidates = [
+        DATA_PATH,
+        get_path("cit_public.json"),
+        get_path("backend/data/cit_public.json"),
+        "cit_public.json",
+        "backend/data/cit_public.json"
+    ]
+    for c in data_candidates:
+        if c and os.path.exists(c):
+            try:
+                with open(c, "r", encoding="utf-8") as f:
+                    STATE["data"] = json.load(f)
+                    data_loaded = True
+                    break
+            except Exception as e:
+                print("Error loading data from", c, e)
 
-    if os.path.exists(SCHEDULE_PATH):
-        with open(SCHEDULE_PATH, "r", encoding="utf-8") as f:
-            STATE["current_schedule"] = json.load(f)
-    else:
-        # Solve initial schedule if not yet exported
-        tt = solve_timetable(STATE["data"])
-        exams = solve_exams(STATE["data"])
-        fest = solve_bookings(STATE["data"], tt["sessions"])
-        STATE["current_schedule"] = {
-            "team": "ChronoSync",
-            "dataset_id": STATE["data"].get("dataset_id", "cit-public-v1"),
-            "sessions": tt["sessions"],
-            "fest_week": fest,
-            "exams": exams
+    if not data_loaded:
+        STATE["data"] = {
+            "institute": "Chilika Institute of Technology",
+            "dataset_id": "cit-public-v1",
+            "rooms": [],
+            "faculty": [],
+            "student_groups": [],
+            "courses": [],
+            "sessions": [],
+            "booking_requests": [],
+            "exams": []
         }
-        os.makedirs("exports", exist_ok=True)
-        with open(SCHEDULE_PATH, "w", encoding="utf-8") as f:
-            json.dump(STATE["current_schedule"], f, indent=2)
+
+    # 2. Safe Schedule Loading
+    sched_loaded = False
+    sched_candidates = [
+        SCHEDULE_PATH,
+        get_path("exports/schedule.json"),
+        get_path("backend/data/pristine_schedule.json"),
+        "exports/schedule.json",
+        "backend/data/pristine_schedule.json"
+    ]
+    for c in sched_candidates:
+        if c and os.path.exists(c):
+            try:
+                with open(c, "r", encoding="utf-8") as f:
+                    STATE["current_schedule"] = json.load(f)
+                    sched_loaded = True
+                    break
+            except Exception as e:
+                print("Error loading schedule from", c, e)
+
+    if not sched_loaded:
+        try:
+            tt = solve_timetable(STATE["data"])
+            exams = solve_exams(STATE["data"])
+            fest = solve_bookings(STATE["data"], tt.get("sessions", []))
+            STATE["current_schedule"] = {
+                "team": "ChronoSync",
+                "dataset_id": STATE["data"].get("dataset_id", "cit-public-v1"),
+                "sessions": tt.get("sessions", []),
+                "fest_week": fest,
+                "exams": exams
+            }
+            try:
+                os.makedirs(os.path.dirname(SCHEDULE_PATH) or ".", exist_ok=True)
+                with open(SCHEDULE_PATH, "w", encoding="utf-8") as f:
+                    json.dump(STATE["current_schedule"], f, indent=2)
+            except Exception:
+                pass
+        except Exception as e:
+            print("Solver fallback warning:", e)
+            STATE["current_schedule"] = {
+                "team": "ChronoSync",
+                "dataset_id": "cit-public-v1",
+                "sessions": [],
+                "fest_week": {},
+                "exams": []
+            }
 
     STATE["disruption_applied"] = False
     STATE["pending_repair"] = None
     STATE["active_disruption"] = None
 
-load_initial_state()
+try:
+    load_initial_state()
+except Exception as e:
+    print("Warning during load_initial_state:", e)
 
 @app.get("/", response_class=HTMLResponse)
 def serve_index():
-    index_file = get_path("frontend/index.html")
-    with open(index_file, "r", encoding="utf-8") as f:
-        return HTMLResponse(
-            content=f.read(),
-            headers={
-                "Cache-Control": "no-cache, no-store, must-revalidate",
-                "Pragma": "no-cache",
-                "Expires": "0"
-            }
-        )
+    candidates = [
+        get_path("frontend/index.html"),
+        "frontend/index.html",
+        os.path.join(BASE_DIR, "frontend/index.html"),
+        os.path.join(os.getcwd(), "frontend/index.html"),
+        "index.html"
+    ]
+    for c in candidates:
+        if c and os.path.exists(c):
+            try:
+                with open(c, "r", encoding="utf-8") as f:
+                    return HTMLResponse(
+                        content=f.read(),
+                        headers={
+                            "Cache-Control": "no-cache, no-store, must-revalidate",
+                            "Pragma": "no-cache",
+                            "Expires": "0"
+                        }
+                    )
+            except Exception as e:
+                print("Error serving index from", c, e)
+    return HTMLResponse("<h2>ChronoSync AI Engine Online</h2><p>Loading application resources...</p>")
 
 # ----------------- Auth & Enterprise User Management -----------------
 
