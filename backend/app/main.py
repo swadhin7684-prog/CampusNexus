@@ -1252,6 +1252,6 @@ def create_manual_booking(payload: ManualBookingPayload):
         "role": payload.role
     }
 
-    sched["fest_week"]["bookings"].append(new_booking)
+    sched["fest_week"]["bookings"].insert(0, new_booking)
     return {"status": "SUCCESS", "message": "Manual booking approved with zero conflicts!", "booking": new_booking}
 

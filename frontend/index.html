@@ -2695,10 +2695,10 @@ Exam soft penalty: 0
                 <div class="card-subtitle">25 Requests evaluated strictly by Role Category Cap and Timestamp Priority</div>
               </div>
               <div style="display:flex; gap:8px;">
-                <button class="btn btn-outline" onclick="filterBookings('all')">All (25)</button>
-                <button class="btn btn-outline" onclick="filterBookings('approved')">Approved (21)</button>
-                <button class="btn btn-outline" onclick="filterBookings('alternative_offered')">Alternatives (2)</button>
-                <button class="btn btn-outline" onclick="filterBookings('rejected')">Rejected (2)</button>
+                <button class="btn btn-outline active-filter-tab" id="btnFilterAll" onclick="filterBookings('all')">All (25)</button>
+                <button class="btn btn-outline" id="btnFilterApproved" onclick="filterBookings('approved')">Approved (21)</button>
+                <button class="btn btn-outline" id="btnFilterAlt" onclick="filterBookings('alternative_offered')">Alternatives (2)</button>
+                <button class="btn btn-outline" id="btnFilterRej" onclick="filterBookings('rejected')">Rejected (2)</button>
               </div>
             </div>
 
@@ -7057,18 +7057,42 @@ let HERO_GRID_INSTANCE = null;
       document.getElementById("ttDetailDrawer").style.display = "none";
     }
 
-    // Spectra Bookings Table
+    // Spectra Bookings Table: Manual & AI bookings automatically float to top with highlight
     function renderBookingsTable(list) {
       const tbody = document.getElementById("bookingsTableBody");
+      if (!tbody) return;
       tbody.innerHTML = "";
-      list.forEach(b => {
+
+      // Dynamic Counter Badges
+      const allList = APP.bookings || [];
+      const btnAll = document.getElementById("btnFilterAll"); if (btnAll) btnAll.innerText = `All (${allList.length})`;
+      const btnApp = document.getElementById("btnFilterApproved"); if (btnApp) btnApp.innerText = `Approved (${allList.filter(b => b.status === 'approved').length})`;
+      const btnAlt = document.getElementById("btnFilterAlt"); if (btnAlt) btnAlt.innerText = `Alternatives (${allList.filter(b => b.status === 'alternative_offered').length})`;
+      const btnRej = document.getElementById("btnFilterRej"); if (btnRej) btnRej.innerText = `Rejected (${allList.filter(b => b.status === 'rejected').length})`;
+
+      // Sort so any MANUAL booking appears at the top
+      const sorted = [...list].sort((a, b) => {
+        const aMan = String(a.request_id || "").startsWith("MANUAL");
+        const bMan = String(b.request_id || "").startsWith("MANUAL");
+        if (aMan && !bMan) return -1;
+        if (!aMan && bMan) return 1;
+        return 0;
+      });
+
+      sorted.forEach(b => {
         const tr = document.createElement("tr");
         let pillCls = "pill-approved";
         if (b.status === "alternative_offered") pillCls = "pill-alternative";
         else if (b.status === "rejected") pillCls = "pill-rejected";
 
+        const isManual = String(b.request_id || "").startsWith("MANUAL");
+        if (isManual) {
+          tr.style.background = "rgba(204, 85, 0, 0.08)";
+          tr.style.borderLeft = "3px solid var(--burnt-orange)";
+        }
+
         tr.innerHTML = `
-          <td><strong>${b.request_id}</strong></td>
+          <td><strong>${b.request_id}</strong> ${isManual ? '<span style="font-size:9px; background:var(--burnt-orange); color:#fff; padding:1px 5px; border-radius:3px; margin-left:4px; font-weight:700;">NEW</span>' : ''}</td>
           <td><strong>${b.title}</strong><br><span style="font-size:11px; color:var(--text-muted);">${b.requester || ""}</span></td>
           <td><span class="pill pill-orange">${b.role || "club"}</span></td>
           <td><strong>${b.attendance || "—"}</strong></td>
