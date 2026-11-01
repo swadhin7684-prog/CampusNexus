@@ -32,3 +32,4 @@ except Exception as e:
             </html>""",
             status_code=500
         )
+
