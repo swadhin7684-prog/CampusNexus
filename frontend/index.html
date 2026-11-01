@@ -2899,13 +2899,14 @@ Exam soft penalty: 0
                 </div>
                 <div class="form-group">
                   <label class="form-label">Expected Attendance</label>
-                  <input type="number" id="mbAttendance" class="form-control" required value="100">
+                  <input type="number" id="mbAttendance" class="form-control" required value="100" min="1" max="1000" oninput="updateManualBookingRoomAvailability()">
                 </div>
               </div>
-              <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px;">
+
+              <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:10px;">
                 <div class="form-group">
                   <label class="form-label">Day</label>
-                  <select id="mbDay" class="form-control">
+                  <select id="mbDay" class="form-control" onchange="updateManualBookingRoomAvailability()">
                     <option value="MON">Monday</option>
                     <option value="TUE">Tuesday</option>
                     <option value="WED">Wednesday</option>
@@ -2915,7 +2916,7 @@ Exam soft penalty: 0
                 </div>
                 <div class="form-group">
                   <label class="form-label">Start Period</label>
-                  <select id="mbStart" class="form-control">
+                  <select id="mbStart" class="form-control" onchange="updateManualBookingRoomAvailability()">
                     <option value="1">P1 (08:00)</option>
                     <option value="2">P2 (09:00)</option>
                     <option value="3">P3 (10:00)</option>
@@ -2932,58 +2933,58 @@ Exam soft penalty: 0
                 </div>
                 <div class="form-group">
                   <label class="form-label">End Period</label>
-                  <select id="mbEnd" class="form-control">
+                  <select id="mbEnd" class="form-control" onchange="updateManualBookingRoomAvailability()">
+                    <option value="1">P1 (09:00)</option>
+                    <option value="2">P2 (10:00)</option>
+                    <option value="3">P3 (11:00)</option>
+                    <option value="4">P4 (12:00)</option>
+                    <option value="5">P5 (13:00)</option>
+                    <option value="6">P6 (15:00)</option>
+                    <option value="7">P7 (16:00)</option>
+                    <option value="8">P8 (17:00)</option>
+                    <option value="9">P9 (18:00)</option>
                     <option value="10">P10 (19:00)</option>
                     <option value="11" selected>P11 (20:00)</option>
                     <option value="12">P12 (21:00)</option>
-                    <option value="13">P13 (22:00)</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Venue</label>
-                  <select id="mbRoom" class="form-control" required>
-                    <optgroup label="── Auditoriums & Special Venues ──">
-                      <option value="AUD">Main Auditorium (AUD) — Cap: 500 [AUDITORIUM]</option>
-                      <option value="OAT">Open Air Theatre (OAT) — Cap: 800 [OUTDOOR]</option>
-                      <option value="SH-1">Seminar Hall 1 (SH-1) — Cap: 150 [SEMINAR HALL]</option>
-                      <option value="SH-2">Seminar Hall 2 (SH-2) — Cap: 100 [SEMINAR HALL]</option>
-                      <option value="LH-1">Lecture Hall 1 (LH-1) — Cap: 200 [LECTURE HALL]</option>
-                      <option value="LH-2">Lecture Hall 2 (LH-2) — Cap: 200 [LECTURE HALL]</option>
-                    </optgroup>
-                    <optgroup label="── Lecture Halls (120 Capacity) ──">
-                      <option value="LH-3">Lecture Hall 3 (LH-3) — Cap: 120 [LECTURE HALL]</option>
-                      <option value="LH-4">Lecture Hall 4 (LH-4) — Cap: 120 [LECTURE HALL]</option>
-                      <option value="LH-5">Lecture Hall 5 (LH-5) — Cap: 120 [LECTURE HALL]</option>
-                      <option value="LH-6">Lecture Hall 6 (LH-6) — Cap: 120 [LECTURE HALL]</option>
-                    </optgroup>
-                    <optgroup label="── Academic Wing A (Classrooms) ──">
-                      <option value="CR-101">Classroom A-101 (CR-101) — Cap: 90 [CLASSROOM]</option>
-                      <option value="CR-102">Classroom A-102 (CR-102) — Cap: 90 [CLASSROOM]</option>
-                      <option value="CR-103">Classroom A-103 (CR-103) — Cap: 80 [CLASSROOM]</option>
-                      <option value="CR-104">Classroom A-104 (CR-104) — Cap: 80 [CLASSROOM]</option>
-                      <option value="CR-105">Classroom A-105 (CR-105) — Cap: 70 [CLASSROOM]</option>
-                    </optgroup>
-                    <optgroup label="── Academic Wing B (Classrooms) ──">
-                      <option value="CR-201">Classroom B-201 (CR-201) — Cap: 90 [CLASSROOM]</option>
-                      <option value="CR-202">Classroom B-202 (CR-202) — Cap: 80 [CLASSROOM]</option>
-                      <option value="CR-203">Classroom B-203 (CR-203) — Cap: 80 [CLASSROOM]</option>
-                      <option value="CR-204">Classroom B-204 (CR-204) — Cap: 70 [CLASSROOM]</option>
-                      <option value="CR-205">Classroom B-205 (CR-205) — Cap: 60 [CLASSROOM]</option>
-                    </optgroup>
-                    <optgroup label="── Specialized Labs & Workshops ──">
-                      <option value="CS-LAB-1">Computing Lab 1 (CS-LAB-1) — Cap: 90 [LAB CS]</option>
-                      <option value="CS-LAB-2">Computing Lab 2 (CS-LAB-2) — Cap: 90 [LAB CS]</option>
-                      <option value="ELEC-LAB-1">Electronics Lab 1 (ELEC-LAB-1) — Cap: 80 [LAB ELEC]</option>
-                      <option value="ELEC-LAB-2">Electronics Lab 2 (ELEC-LAB-2) — Cap: 80 [LAB ELEC]</option>
-                      <option value="PHY-LAB">Physics Lab (PHY-LAB) — Cap: 90 [LAB PHY]</option>
-                      <option value="MECH-WS">Central Workshop (MECH-WS) — Cap: 90 [WORKSHOP]</option>
-                      <option value="CIVIL-LAB">Civil Engineering Lab (CIVIL-LAB) — Cap: 60 [LAB CIVIL]</option>
-                    </optgroup>
                   </select>
                 </div>
               </div>
 
-              <button type="submit" class="btn btn-orange" style="width:100%; margin-top:8px;">
+              <!-- VENUE SELECTOR WITH DYNAMIC AVAILABILITY HIGHLIGHTS -->
+              <div class="form-group" style="margin-top:14px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; flex-wrap:wrap; gap:8px;">
+                  <label class="form-label" style="margin-bottom:0; font-weight:700;">
+                    Target Venue (🟢 White/Green = Available &bull; 🔴 Red = Occupied / Too Small)
+                  </label>
+                  <div style="display:flex; gap:6px;">
+                    <span id="mbBadgeAvail" class="pill" style="background:#dcfce7; color:#15803d; border:1px solid #86efac; font-weight:700;">🟢 Available</span>
+                    <span id="mbBadgeUnavail" class="pill" style="background:#fee2e2; color:#b91c1c; border:1px solid #fca5a5; font-weight:700;">🔴 Unavailable</span>
+                  </div>
+                </div>
+                <select id="mbRoom" class="form-control" required onchange="onManualBookingRoomSelected()" style="font-size:13px; font-weight:600; padding:10px 12px;">
+                  <!-- Dynamically populated and styled in red / white -->
+                </select>
+              </div>
+
+              <!-- INTERACTIVE VENUE AVAILABILITY CHIPS (CLICK TO SELECT) -->
+              <div style="background:#fcfbf9; border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:12px; margin-top:12px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
+                  <span style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-muted);">
+                    Campus Venues Quick-Select (Click any green room to pick):
+                  </span>
+                  <span id="mbSummaryStats" style="font-size:11px; font-weight:700; color:var(--burnt-orange);"></span>
+                </div>
+                <div id="mbRoomChipsGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(130px, 1fr)); gap:6px; max-height:160px; overflow-y:auto; padding-right:4px;">
+                  <!-- Populated by updateManualBookingRoomAvailability() -->
+                </div>
+              </div>
+
+              <!-- REAL-TIME AUDIT STATUS BANNER -->
+              <div id="mbSelectedRoomAlert" style="margin-top:14px; padding:12px 14px; border-radius:var(--radius-md); font-size:12px; font-weight:600; display:flex; align-items:center; gap:8px;">
+                <!-- Real-time feedback for selected venue -->
+              </div>
+
+              <button type="submit" id="mbSubmitBtn" class="btn btn-orange" style="width:100%; margin-top:14px; padding:12px; font-size:14px; font-weight:700;">
                 Submit for Constraint Audit & Booking
               </button>
             </form>
@@ -6684,7 +6685,9 @@ let HERO_GRID_INSTANCE = null;
       } else if (viewId === 'rooms') {
         if (typeof loadRoomUtilisation === 'function') loadRoomUtilisation();
       } else if (viewId === 'manual_booking') {
-        if (typeof populateManualRoomSelect === 'function') populateManualRoomSelect();
+        if (typeof updateManualBookingRoomAvailability === 'function') updateManualBookingRoomAvailability();
+      } else if (viewId === 'bookings') {
+        if (typeof renderBookingsTable === 'function' && APP.bookings) renderBookingsTable(APP.bookings);
       }
     }
 
@@ -6865,7 +6868,18 @@ let HERO_GRID_INSTANCE = null;
 
         if (ov) APP.overview = ov;
         if (tt) APP.timetable = tt.sessions || [];
-        if (bk) APP.bookings = bk.bookings || [];
+        if (bk) {
+          let bList = bk.bookings || [];
+          try {
+            const savedCustom = JSON.parse(localStorage.getItem('chronosync_custom_bookings') || '[]');
+            savedCustom.forEach(sb => {
+              if (!bList.some(b => b.request_id === sb.request_id)) {
+                bList.unshift(sb);
+              }
+            });
+          } catch(e) {}
+          APP.bookings = bList;
+        }
         if (ex) APP.exams = ex.exams || [];
         if (dis) APP.disruptions = dis;
         if (rep) APP.validatorReport = rep;
@@ -6894,6 +6908,7 @@ let HERO_GRID_INSTANCE = null;
         if (typeof renderFacultyDirectory === 'function') renderFacultyDirectory();
         if (typeof loadRoomUtilisation === 'function') loadRoomUtilisation();
         if (typeof populateManualRoomSelect === 'function') populateManualRoomSelect();
+        if (typeof updateManualBookingRoomAvailability === 'function') updateManualBookingRoomAvailability();
         if (typeof populateAiPersonaSelect === 'function') populateAiPersonaSelect();
         if (typeof initGridMotionBackground === 'function') initGridMotionBackground();
         if (typeof updateLandingAuthState === 'function') updateLandingAuthState();
@@ -7674,16 +7689,91 @@ let HERO_GRID_INSTANCE = null;
       { id: "CIVIL-LAB", name: "Civil Engineering Lab", type: "lab_civil", capacity: 60 }
     ];
 
-    // Manual Event Booking Venue Populator
-    function populateManualRoomSelect() {
+    // Real-Time Room Availability & Visual State Engine for Manual Venue Booking
+    function updateManualBookingRoomAvailability() {
       const sel = document.getElementById("mbRoom");
       if (!sel) return;
+
+      const dayEl = document.getElementById("mbDay");
+      const startEl = document.getElementById("mbStart");
+      const endEl = document.getElementById("mbEnd");
+      const attEl = document.getElementById("mbAttendance");
+
+      const day = dayEl ? dayEl.value : "MON";
+      let start = parseInt(startEl ? startEl.value : 10) || 10;
+      let end = parseInt(endEl ? endEl.value : 11) || 11;
+      const attendance = parseInt(attEl ? attEl.value : 100) || 0;
+
+      // Ensure end period is never before start period
+      if (end < start) {
+        end = start;
+        if (endEl) endEl.value = String(start);
+      }
+
       const currentVal = sel.value;
       const rooms = (APP.overview && APP.overview.rooms && APP.overview.rooms.length > 0)
         ? APP.overview.rooms
         : CIT_MASTER_ROOMS;
 
-      if (!rooms || rooms.length === 0) return;
+      const timetable = APP.timetable || [];
+      const bookings = APP.bookings || [];
+
+      function isSameDay(d1, d2) {
+        if (!d1 || !d2) return false;
+        return String(d1).toUpperCase().slice(0, 3) === String(d2).toUpperCase().slice(0, 3);
+      }
+
+      function isOverlap(s1, e1, s2, e2) {
+        return Math.max(s1, s2) <= Math.min(e1, e2);
+      }
+
+      const roomStatus = {};
+      let availCount = 0;
+      let unavailCount = 0;
+
+      rooms.forEach(r => {
+        let avail = true;
+        let reason = "";
+
+        // Constraint 1: Capacity check
+        if (attendance > 0 && r.capacity < attendance) {
+          avail = false;
+          reason = `Cap too small (${r.capacity} < ${attendance})`;
+        }
+
+        // Constraint 2: Class timetable conflict
+        if (avail) {
+          const classConflict = timetable.find(s => {
+            if (!isSameDay(s.day, day) || s.room_id !== r.id) return false;
+            const sStart = parseInt(s.start_period);
+            const sEnd = parseInt(s.end_period || (s.start_period + (s.duration || 1) - 1));
+            return isOverlap(start, end, sStart, sEnd);
+          });
+          if (classConflict) {
+            avail = false;
+            reason = `Occupied by Class ${classConflict.course_id || classConflict.session_id} (P${classConflict.start_period}-P${classConflict.end_period || classConflict.start_period})`;
+          }
+        }
+
+        // Constraint 3: Approved bookings conflict
+        if (avail) {
+          const bookConflict = bookings.find(b => {
+            if (b.status !== "approved" || !isSameDay(b.day, day) || b.room_id !== r.id) return false;
+            const bStart = parseInt(b.start_period);
+            const bEnd = parseInt(b.end_period || b.start_period);
+            return isOverlap(start, end, bStart, bEnd);
+          });
+          if (bookConflict) {
+            avail = false;
+            reason = `Booked: ${bookConflict.title || bookConflict.request_id} (P${bookConflict.start_period}-P${bookConflict.end_period})`;
+          }
+        }
+
+        if (avail) availCount++;
+        else unavailCount++;
+
+        roomStatus[r.id] = { avail, reason, room: r };
+      });
 
       const groups = {
         "Auditoriums & Special Venues": ["AUD", "OAT", "SH-1", "SH-2", "LH-1", "LH-2"],
@@ -7694,27 +7784,158 @@ let HERO_GRID_INSTANCE = null;
       };
 
       sel.innerHTML = "";
+      let firstAvailableId = null;
+
       for (const [groupName, roomIds] of Object.entries(groups)) {
         const optGroup = document.createElement("optgroup");
         optGroup.label = `── ${groupName} ──`;
+        
         roomIds.forEach(rid => {
-          const r = rooms.find(item => item.id === rid);
-          if (r) {
-            const opt = document.createElement("option");
-            opt.value = r.id;
-            const typeStr = (r.type || "").replace('_', ' ').toUpperCase();
-            opt.innerText = `${r.name} (${r.id}) — Cap: ${r.capacity} [${typeStr}]`;
-            optGroup.appendChild(opt);
+          const info = roomStatus[rid];
+          if (!info) return;
+          const r = info.room;
+          const opt = document.createElement("option");
+          opt.value = r.id;
+
+          if (info.avail) {
+            if (!firstAvailableId) firstAvailableId = r.id;
+            opt.textContent = `🟢 [AVAILABLE] ${r.name} (${r.id}) — Cap: ${r.capacity}`;
+            opt.style.color = "#15803d";
+            opt.style.backgroundColor = "#ffffff";
+            opt.style.fontWeight = "600";
+          } else {
+            opt.textContent = `🔴 [UNAVAILABLE: ${info.reason}] ${r.name} (${r.id}) — Cap: ${r.capacity}`;
+            opt.style.color = "#dc2626";
+            opt.style.backgroundColor = "#fff1f2";
+            opt.style.fontWeight = "700";
           }
+          optGroup.appendChild(opt);
         });
+
         if (optGroup.children.length > 0) {
           sel.appendChild(optGroup);
         }
       }
 
-      if (currentVal && Array.from(sel.options).some(o => o.value === currentVal)) {
+      // Restore previously chosen room if available, otherwise switch to first available room
+      if (currentVal && roomStatus[currentVal] && roomStatus[currentVal].avail) {
+        sel.value = currentVal;
+      } else if (firstAvailableId) {
+        sel.value = firstAvailableId;
+      } else if (currentVal) {
         sel.value = currentVal;
       }
+
+      // Update Header Badges
+      const bAvail = document.getElementById("mbBadgeAvail");
+      if (bAvail) bAvail.innerText = `🟢 ${availCount} Available`;
+      const bUnavail = document.getElementById("mbBadgeUnavail");
+      if (bUnavail) bUnavail.innerText = `🔴 ${unavailCount} Busy / Too Small`;
+
+      const stats = document.getElementById("mbSummaryStats");
+      if (stats) stats.innerText = `${availCount} free of 27 rooms for ${day} P${start}-P${end}`;
+
+      // Render Visual Chips Grid
+      const chipsGrid = document.getElementById("mbRoomChipsGrid");
+      if (chipsGrid) {
+        chipsGrid.innerHTML = "";
+        rooms.forEach(r => {
+          const info = roomStatus[r.id];
+          if (!info) return;
+          const chip = document.createElement("button");
+          chip.type = "button";
+          chip.style.padding = "6px 8px";
+          chip.style.borderRadius = "6px";
+          chip.style.fontSize = "11px";
+          chip.style.fontWeight = "700";
+          chip.style.display = "flex";
+          chip.style.alignItems = "center";
+          chip.style.justifyContent = "space-between";
+          chip.style.transition = "all 0.15s ease";
+
+          if (info.avail) {
+            chip.style.background = "#ffffff";
+            chip.style.color = "#15803d";
+            chip.style.border = (sel.value === r.id) ? "2px solid #16a34a" : "1.5px solid #86efac";
+            chip.style.cursor = "pointer";
+            chip.innerHTML = `<span>🟢 ${r.id}</span><span style="font-size:10px; opacity:0.8;">${r.capacity}</span>`;
+            chip.title = `Available! Click to select ${r.name} (Cap: ${r.capacity})`;
+            chip.onclick = () => {
+              sel.value = r.id;
+              updateManualBookingRoomAvailability();
+            };
+          } else {
+            chip.style.background = "#fef2f2";
+            chip.style.color = "#dc2626";
+            chip.style.border = (sel.value === r.id) ? "2px solid #dc2626" : "1.5px solid #fca5a5";
+            chip.style.cursor = "pointer";
+            chip.style.opacity = "0.9";
+            chip.innerHTML = `<span>🔴 ${r.id}</span><span style="font-size:10px; opacity:0.8;">${r.capacity}</span>`;
+            chip.title = `Unavailable: ${info.reason}`;
+            chip.onclick = () => {
+              sel.value = r.id;
+              updateManualBookingRoomAvailability();
+              showToast(`${r.name} is unavailable: ${info.reason}`, "error");
+            };
+          }
+          chipsGrid.appendChild(chip);
+        });
+      }
+
+      onManualBookingRoomSelected(roomStatus);
+    }
+
+    function onManualBookingRoomSelected(roomStatusMap) {
+      const sel = document.getElementById("mbRoom");
+      const alertEl = document.getElementById("mbSelectedRoomAlert");
+      const btn = document.getElementById("mbSubmitBtn");
+      if (!sel || !alertEl || !btn) return;
+
+      const currentId = sel.value;
+      const rooms = (APP.overview && APP.overview.rooms && APP.overview.rooms.length > 0)
+        ? APP.overview.rooms
+        : CIT_MASTER_ROOMS;
+      const currentRoom = rooms.find(r => r.id === currentId);
+
+      const info = (roomStatusMap && roomStatusMap[currentId]) ? roomStatusMap[currentId] : null;
+
+      if (info && !info.avail) {
+        alertEl.style.display = "flex";
+        alertEl.style.background = "#fee2e2";
+        alertEl.style.border = "1.5px solid #ef4444";
+        alertEl.style.color = "#991b1b";
+        alertEl.innerHTML = `
+          <span style="font-size:18px;">🔴</span>
+          <div style="flex:1;">
+            <strong>Venue Unavailable (${currentRoom ? currentRoom.name : currentId}):</strong>
+            <span style="margin-left:4px;">${info.reason}. Please select an available green room above.</span>
+          </div>
+        `;
+        btn.disabled = true;
+        btn.style.opacity = "0.5";
+        btn.style.cursor = "not-allowed";
+        btn.innerText = `⚠️ Cannot Book: ${currentId} is Unavailable`;
+      } else {
+        alertEl.style.display = "flex";
+        alertEl.style.background = "#dcfce7";
+        alertEl.style.border = "1.5px solid #22c55e";
+        alertEl.style.color = "#14532d";
+        alertEl.innerHTML = `
+          <span style="font-size:18px;">🟢</span>
+          <div style="flex:1;">
+            <strong>Venue 100% Available (${currentRoom ? currentRoom.name : currentId}):</strong>
+            <span style="margin-left:4px;">Capacity ${currentRoom ? currentRoom.capacity : "—"} with 0 class or event conflicts!</span>
+          </div>
+        `;
+        btn.disabled = false;
+        btn.style.opacity = "1";
+        btn.style.cursor = "pointer";
+        btn.innerText = `Submit for Constraint Audit & Booking (${currentId})`;
+      }
+    }
+
+    function populateManualRoomSelect() {
+      updateManualBookingRoomAvailability();
     }
 
     async function handleManualBooking(e) {
@@ -7723,7 +7944,7 @@ let HERO_GRID_INSTANCE = null;
       const payload = {
         title: document.getElementById("mbTitle").value,
         requester: document.getElementById("mbRequester").value,
-        role: APP.role,
+        role: APP.role || "admin",
         attendance: parseInt(document.getElementById("mbAttendance").value),
         day: document.getElementById("mbDay").value,
         start_period: parseInt(document.getElementById("mbStart").value),
@@ -7743,7 +7964,40 @@ let HERO_GRID_INSTANCE = null;
         hideLatticeLoader();
         if (res.ok) {
           showToast(data.message, "success");
+          
+          const created = data.booking || {
+            request_id: `MANUAL-${Date.now() % 10000}`,
+            status: "approved",
+            day: payload.day,
+            start_period: payload.start_period,
+            end_period: payload.end_period,
+            room_id: payload.room_id,
+            reason: `Manually scheduled by authorized ${payload.role.toUpperCase()}`,
+            title: payload.title,
+            requester: payload.requester,
+            attendance: payload.attendance,
+            role: payload.role
+          };
+
+          // Save custom booking into localStorage so it survives reload
+          try {
+            const savedCustom = JSON.parse(localStorage.getItem('chronosync_custom_bookings') || '[]');
+            savedCustom.unshift(created);
+            localStorage.setItem('chronosync_custom_bookings', JSON.stringify(savedCustom.slice(0, 25)));
+          } catch(e) {}
+
+          if (!APP.bookings) APP.bookings = [];
+          APP.bookings = APP.bookings.filter(b => b.request_id !== created.request_id);
+          APP.bookings.unshift(created);
+
           await loadAllData();
+
+          if (!APP.bookings.some(b => b.request_id === created.request_id)) {
+            APP.bookings.unshift(created);
+          }
+          if (typeof renderBookingsTable === 'function') {
+            renderBookingsTable(APP.bookings);
+          }
           navigate('bookings');
         } else {
           showToast(data.detail, "error");

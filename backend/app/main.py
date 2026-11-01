@@ -787,7 +787,7 @@ def get_exams(group_id: Optional[str] = Query(None), day: Optional[str] = Query(
 
 # ----------------- Booking & AI Endpoints -----------------
 @app.get("/api/bookings")
-def get_bookings(status: Optional[str] = Query(None)):
+def get_bookings(status: Optional[str] = None):
     sched = STATE["current_schedule"]
     d = STATE["data"]
     if not sched or "fest_week" not in sched:
@@ -805,11 +805,11 @@ def get_bookings(status: Optional[str] = Query(None)):
         r_info = rooms_meta.get(b.get("room_id"), {})
         bookings.append({
             **b,
-            "title": meta.get("title", rid_),
-            "requester": meta.get("requester"),
-            "role": meta.get("role"),
-            "requested_category": meta.get("requested_category"),
-            "attendance": meta.get("attendance"),
+            "title": b.get("title") or meta.get("title", rid_),
+            "requester": b.get("requester") or meta.get("requester") or "Dean's Office",
+            "role": b.get("role") or meta.get("role") or "admin",
+            "requested_category": b.get("requested_category") or meta.get("requested_category") or "institute",
+            "attendance": b.get("attendance") if b.get("attendance") is not None else meta.get("attendance", 0),
             "room_name": r_info.get("name", b.get("room_id"))
         })
 
@@ -1253,5 +1253,11 @@ def create_manual_booking(payload: ManualBookingPayload):
     }
 
     sched["fest_week"]["bookings"].insert(0, new_booking)
+    try:
+        os.makedirs(os.path.dirname(SCHEDULE_PATH) or ".", exist_ok=True)
+        with open(SCHEDULE_PATH, "w", encoding="utf-8") as f:
+            json.dump(sched, f, indent=2)
+    except Exception:
+        pass
     return {"status": "SUCCESS", "message": "Manual booking approved with zero conflicts!", "booking": new_booking}
 
