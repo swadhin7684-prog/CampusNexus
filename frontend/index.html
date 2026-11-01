@@ -2038,7 +2038,16 @@
       border-color: #9CAF88;
       transform: translateY(-1px);
     }
+    /* Instant Auth Persistence: Skip landing gateway immediately on reload if logged in */
+    html.user-authenticated #landingGateway {
+      display: none !important;
+    }
 </style>
+  <script>
+    if (localStorage.getItem("chronosync_auth_status") === "logged_in") {
+      document.documentElement.classList.add("user-authenticated");
+    }
+  </script>
 </head>
 <body>
 
@@ -6175,8 +6184,15 @@ Exam soft penalty: 0
       localStorage.removeItem("chronosync_user_name");
       localStorage.removeItem("chronosync_user_email");
       localStorage.removeItem("chronosync_user_role");
+      document.documentElement.classList.remove("user-authenticated");
       showToast("Signed out of ChronoSync session", "info");
       updateLandingAuthState();
+      const gateway = document.getElementById("landingGateway");
+      if (gateway) {
+        gateway.style.display = "flex";
+        gateway.classList.remove("fade-out");
+        initLandingGridMotion();
+      }
     }
 
     function switchRole(role) {
@@ -6275,6 +6291,7 @@ Exam soft penalty: 0
     }
 
     function enterAppDashboard() {
+      document.documentElement.classList.add("user-authenticated");
       const gateway = document.getElementById("landingGateway");
       if (!gateway) return;
       gateway.classList.add("fade-out");
@@ -6282,16 +6299,17 @@ Exam soft penalty: 0
         gateway.style.display = "none";
         initGridMotionBackground();
         updateLandingAuthState();
-        initLandingGridMotion();
-      }, 500);
+      }, 400);
     }
 
     function openLandingGateway() {
+      document.documentElement.classList.remove("user-authenticated");
       const gateway = document.getElementById("landingGateway");
       if (!gateway) return;
       gateway.style.display = "flex";
       gateway.classList.remove("fade-out");
       updateLandingAuthState();
+      initLandingGridMotion();
     }
 
     function updateValidatorDisplay(rep) {
@@ -7830,10 +7848,23 @@ let HERO_GRID_INSTANCE = null;
       }
     }
 
-    // On Load
+    // On Load: If already logged in, directly open Dashboard; otherwise show landing gateway
     window.addEventListener("DOMContentLoaded", () => {
-      initLandingGridMotion();
       loadAllData();
+      if (isUserAuthenticated()) {
+        document.documentElement.classList.add("user-authenticated");
+        const gateway = document.getElementById("landingGateway");
+        if (gateway) gateway.style.display = "none";
+        const savedRole = localStorage.getItem("chronosync_user_role") || "admin";
+        switchRole(savedRole);
+        navigate('dashboard');
+        setTimeout(() => {
+          initGridMotionBackground();
+        }, 100);
+      } else {
+        initLandingGridMotion();
+        updateLandingAuthState();
+      }
     });
   </script>
 </body>
