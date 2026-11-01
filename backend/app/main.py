@@ -42,17 +42,29 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+
+def get_path(rel_path: str) -> str:
+    if os.path.exists(rel_path):
+        return rel_path
+    abs_p = os.path.join(BASE_DIR, rel_path)
+    if os.path.exists(abs_p):
+        return abs_p
+    return rel_path
+
 # Mount static assets for campus imagery and frontend resources
-if os.path.exists("frontend/assets"):
-    app.mount("/assets", StaticFiles(directory="frontend/assets"), name="assets")
+assets_dir = get_path("frontend/assets")
+if os.path.exists(assets_dir):
+    app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
 
-if os.path.exists("frontend/Frontend_Grid_Pic"):
-    app.mount("/Frontend_Grid_Pic", StaticFiles(directory="frontend/Frontend_Grid_Pic"), name="grid_pics")
+grid_dir = get_path("frontend/Frontend_Grid_Pic")
+if os.path.exists(grid_dir):
+    app.mount("/Frontend_Grid_Pic", StaticFiles(directory=grid_dir), name="grid_pics")
 
-DATA_PATH = "backend/data/cit_public.json"
-SCHEDULE_PATH = "exports/schedule.json"
-SCHEDULE_AFTER_PATH = "exports/schedule_after.json"
-DISRUPTION_PATH = "requirements/CrunchWeek_StarterPack (1)/CrunchWeek_StarterPack/examples/sample_disruption.json"
+DATA_PATH = get_path("backend/data/cit_public.json")
+SCHEDULE_PATH = get_path("exports/schedule.json")
+SCHEDULE_AFTER_PATH = get_path("exports/schedule_after.json")
+DISRUPTION_PATH = get_path("requirements/CrunchWeek_StarterPack (1)/CrunchWeek_StarterPack/examples/sample_disruption.json")
 
 import shutil
 
@@ -67,12 +79,18 @@ STATE = {
 }
 
 def load_initial_state(force_pristine: bool = False):
-    pristine_path = "backend/data/pristine_schedule.json"
+    pristine_path = get_path("backend/data/pristine_schedule.json")
     if force_pristine and os.path.exists(pristine_path):
-        shutil.copyfile(pristine_path, SCHEDULE_PATH)
-    pristine_after = "backend/data/pristine_schedule_after.json"
+        try:
+            shutil.copyfile(pristine_path, SCHEDULE_PATH)
+        except Exception:
+            pass
+    pristine_after = get_path("backend/data/pristine_schedule_after.json")
     if force_pristine and os.path.exists(pristine_after):
-        shutil.copyfile(pristine_after, SCHEDULE_AFTER_PATH)
+        try:
+            shutil.copyfile(pristine_after, SCHEDULE_AFTER_PATH)
+        except Exception:
+            pass
 
     with open(DATA_PATH, "r", encoding="utf-8") as f:
         STATE["data"] = json.load(f)
@@ -104,7 +122,8 @@ load_initial_state()
 
 @app.get("/", response_class=HTMLResponse)
 def serve_index():
-    with open("frontend/index.html", "r", encoding="utf-8") as f:
+    index_file = get_path("frontend/index.html")
+    with open(index_file, "r", encoding="utf-8") as f:
         return HTMLResponse(
             content=f.read(),
             headers={
@@ -157,7 +176,7 @@ def decode_access_token(token: str) -> Optional[dict]:
     except Exception:
         return None
 
-USERS_FILE = "backend/data/users.json"
+USERS_FILE = get_path("backend/data/users.json")
 
 def load_users():
     if os.path.exists(USERS_FILE):
