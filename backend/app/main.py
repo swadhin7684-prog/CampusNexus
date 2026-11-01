@@ -1,5 +1,5 @@
 """
-ChronoSync - Main FastAPI Application
+CampusNexus - Main FastAPI Application
 Chilika Institute of Technology (CIT)
 Intelligent Campus Scheduling & Resource Optimization System
 """
@@ -28,7 +28,7 @@ from backend.app.engines.ai_assistant import parse_plain_language_booking, expla
 from backend.app import validator
 
 app = FastAPI(
-    title="ChronoSync - Intelligent Campus Scheduling & Resource Optimization System",
+    title="CampusNexus - Intelligent Campus Scheduling & Resource Optimization System",
     description="One Campus. One Schedule. Zero Conflicts. Automatic College Timetable Generation, AI Event Booking, Exam Scheduling & Disruption Repair for Chilika Institute of Technology",
     version="1.0.0"
 )
@@ -145,7 +145,7 @@ def load_initial_state(force_pristine: bool = False):
             exams = solve_exams(STATE["data"])
             fest = solve_bookings(STATE["data"], tt.get("sessions", []))
             STATE["current_schedule"] = {
-                "team": "ChronoSync",
+                "team": "CampusNexus",
                 "dataset_id": STATE["data"].get("dataset_id", "cit-public-v1"),
                 "sessions": tt.get("sessions", []),
                 "fest_week": fest,
@@ -160,7 +160,7 @@ def load_initial_state(force_pristine: bool = False):
         except Exception as e:
             print("Solver fallback warning:", e)
             STATE["current_schedule"] = {
-                "team": "ChronoSync",
+                "team": "CampusNexus",
                 "dataset_id": "cit-public-v1",
                 "sessions": [],
                 "fest_week": {},
@@ -199,7 +199,7 @@ def serve_index():
                     )
             except Exception as e:
                 print("Error serving index from", c, e)
-    return HTMLResponse("<h2>ChronoSync AI Engine Online</h2><p>Loading application resources...</p>")
+    return HTMLResponse("<h2>CampusNexus AI Engine Online</h2><p>Loading application resources...</p>")
 
 # ----------------- Auth & Enterprise User Management -----------------
 
@@ -234,7 +234,7 @@ def create_access_token(user_id: str, email: str, role: str, name: str) -> str:
         "name": name,
         "exp": expire,
         "iat": datetime.datetime.now(datetime.timezone.utc),
-        "iss": "Chilika Institute of Technology - ChronoSync"
+        "iss": "Chilika Institute of Technology - CampusNexus"
     }
     return jwt.encode(payload, JWT_SECRET_KEY, algorithm=JWT_ALGORITHM)
 
@@ -459,7 +459,7 @@ def auth_signup(payload: SignupPayload):
             safe_user = {k: v for k, v in existing.items() if k != "password"}
             return {
                 "status": "SUCCESS",
-                "message": f"Welcome to ChronoSync, {safe_user['name']}!",
+                "message": f"Welcome to CampusNexus, {safe_user['name']}!",
                 "user": safe_user,
                 "token": token
             }
@@ -498,7 +498,7 @@ def auth_signup(payload: SignupPayload):
     
     return {
         "status": "SUCCESS",
-        "message": f"CIT Account created successfully! Welcome to ChronoSync, {new_user['name']}.",
+        "message": f"CIT Account created successfully! Welcome to CampusNexus, {new_user['name']}.",
         "user": safe_user,
         "token": token
     }
@@ -727,7 +727,7 @@ def generate_timetable_api(optimize_soft: bool = True):
     fest = solve_bookings(d, res["sessions"])
 
     new_schedule = {
-        "team": "ChronoSync",
+        "team": "CampusNexus",
         "dataset_id": d.get("dataset_id", "cit-public-v1"),
         "sessions": res["sessions"],
         "fest_week": fest,
@@ -1049,7 +1049,7 @@ async def upload_custom_dataset(file: UploadFile = File(...)):
         exams = solve_exams(custom_data)
         fest = solve_bookings(custom_data, tt["sessions"])
         STATE["current_schedule"] = {
-            "team": "ChronoSync",
+            "team": "CampusNexus",
             "dataset_id": custom_data.get("dataset_id", "cit-custom"),
             "sessions": tt["sessions"],
             "fest_week": fest,

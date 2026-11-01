@@ -6,7 +6,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ChronoSync — Intelligent Campus Scheduling & Resource Optimization System</title>
+  <title>CampusNexus — Intelligent Campus Scheduling & Resource Optimization System</title>
   <style>
     /* ----------------------------------------------------
        CHRONOSYNC ARCHITECTURAL LUXURY DESIGN SYSTEM
@@ -2050,14 +2050,15 @@
       border-color: #9CAF88;
       transform: translateY(-1px);
     }
-    /* Instant Auth Persistence: Skip landing gateway immediately on reload if logged in */
-    html.user-authenticated #landingGateway {
+    /* Instant App Reload Persistence: Skip landing gateway on F5 / reload ONLY if already entered dashboard during this tab session */
+    html.user-in-app #landingGateway {
       display: none !important;
     }
 </style>
   <script>
-    if (localStorage.getItem("chronosync_auth_status") === "logged_in") {
-      document.documentElement.classList.add("user-authenticated");
+    // If user entered dashboard during this browser tab session, keep in dashboard on reload
+    if (sessionStorage.getItem("campusnexus_entered_dashboard") === "true") {
+      document.documentElement.classList.add("user-in-app");
     }
   </script>
 </head>
@@ -2079,7 +2080,7 @@
 
     <!-- Top Bar Navigation -->
     <header class="landing-header">
-      <div class="landing-brand" onclick="enterAppDashboard()" title="ChronoSync Platform">
+      <div class="landing-brand" onclick="enterAppDashboard()" title="CampusNexus Platform">
         <div class="landing-brand-logo">
           <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10"></circle>
@@ -2087,7 +2088,7 @@
           </svg>
         </div>
         <div>
-          <div class="landing-brand-title">CHRONO<span>SYNC</span></div>
+          <div class="landing-brand-title">CAMPUS<span>NEXUS</span></div>
           <div class="landing-brand-sub">Chilika Institute of Technology</div>
         </div>
       </div>
@@ -2170,7 +2171,7 @@
           </div>
           <div>
             <div style="font-weight:800; font-size:15px; color:#F8F4E7; letter-spacing:0.4px;">Chilika Institute of Technology</div>
-            <div style="font-size:11px; color:#FFB74D;">ChronoSync Identity & Resource Portal</div>
+            <div style="font-size:11px; color:#FFB74D;">CampusNexus Identity & Resource Portal</div>
           </div>
         </div>
         <button class="auth-modal-close" onclick="closeAuthModal()" title="Close">&times;</button>
@@ -2207,7 +2208,7 @@
         </div>
 
         <button class="btn btn-orange auth-submit-btn" onclick="submitAuthLogin()" style="margin-top:4px;">
-          <span>Log In to ChronoSync</span>
+          <span>Log In to CampusNexus</span>
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         </button>
 
@@ -2341,7 +2342,7 @@
           </svg>
         </div>
         <div>
-          <div class="brand-title">ChronoSync</div>
+          <div class="brand-title">CampusNexus</div>
           <div class="brand-subtitle" style="letter-spacing:0.4px;">Chilika Institute of Technology</div>
         </div>
       </div>
@@ -2592,7 +2593,7 @@
 
               <!-- Real Raw Log View -->
               <div style="background:var(--chocolate-dark); color:var(--cream); padding:16px; border-radius:var(--radius-md); font-family:monospace; font-size:11px; line-height:1.6;" id="valRawLog">
-Dataset: cit-public-v1 | Schedule says: cit-public-v1 | Team: ChronoSync
+Dataset: cit-public-v1 | Schedule says: cit-public-v1 | Team: CampusNexus
 Hard violations: 0 {}
 Soft penalty: 161 {'S1': 0, 'S2': 131, 'S3': 15, 'S4': 15, 'S5': 0, 'S6': 0}
 Bookings: score 65.5 | approved 21, alternatives 2, rejected 2, session overrides 0, priority inversions 0
@@ -2743,7 +2744,7 @@ Exam soft penalty: 0
                   <span style="display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:10px; background:var(--burnt-orange-soft); color:var(--burnt-orange);">
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                   </span>
-                  ChronoSync Bilingual AI Scheduling & Venue Assistant
+                  CampusNexus Bilingual AI Scheduling & Venue Assistant
                 </div>
                 <div class="card-subtitle">Intelligent faculty & coordinator copilot: parses English & Hinglish, verifies 100% of proposals with CP-SAT constraint engine</div>
               </div>
@@ -2876,7 +2877,7 @@ Exam soft penalty: 0
               <div class="ai-msg-assistant" style="background:var(--surface-white); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:18px; box-shadow:var(--shadow-sm);">
                 <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
                   <span style="width:24px; height:24px; border-radius:6px; background:var(--burnt-orange); color:#fff; display:inline-flex; align-items:center; justify-content:center; font-size:11px; font-weight:800;">AI</span>
-                  <strong style="color:var(--chocolate); font-size:14px;">ChronoSync Scheduling Assistant Ready</strong>
+                  <strong style="color:var(--chocolate); font-size:14px;">CampusNexus Scheduling Assistant Ready</strong>
                   <span class="pill pill-approved" style="margin-left:auto; font-size:10px;">Deterministic Solver Linked</span>
                 </div>
                 <div style="font-size:13px; color:var(--text-muted); line-height:1.6;">
@@ -6206,7 +6207,7 @@ Exam soft penalty: 0
           localStorage.setItem("chronosync_user_role", data.user.role || "admin");
 
           closeAuthModal();
-          showToast(data.message || `Welcome to ChronoSync, ${data.user.name}!`, "success");
+          showToast(data.message || `Welcome to CampusNexus, ${data.user.name}!`, "success");
           
           switchRole(data.user.role || "admin");
           updateLandingAuthState();
@@ -6235,8 +6236,9 @@ Exam soft penalty: 0
       localStorage.removeItem("chronosync_user_name");
       localStorage.removeItem("chronosync_user_email");
       localStorage.removeItem("chronosync_user_role");
-      document.documentElement.classList.remove("user-authenticated");
-      showToast("Signed out of ChronoSync session", "info");
+      sessionStorage.removeItem("campusnexus_entered_dashboard");
+      document.documentElement.classList.remove("user-in-app");
+      showToast("Signed out of CampusNexus session", "info");
       updateLandingAuthState();
       const gateway = document.getElementById("landingGateway");
       if (gateway) {
@@ -6338,7 +6340,8 @@ Exam soft penalty: 0
     }
 
     function enterAppDashboard() {
-      document.documentElement.classList.add("user-authenticated");
+      sessionStorage.setItem("campusnexus_entered_dashboard", "true");
+      document.documentElement.classList.add("user-in-app");
       const gateway = document.getElementById("landingGateway");
       if (!gateway) return;
       gateway.classList.add("fade-out");
@@ -6350,7 +6353,8 @@ Exam soft penalty: 0
     }
 
     function openLandingGateway() {
-      document.documentElement.classList.remove("user-authenticated");
+      sessionStorage.removeItem("campusnexus_entered_dashboard");
+      document.documentElement.classList.remove("user-in-app");
       const gateway = document.getElementById("landingGateway");
       if (!gateway) return;
       gateway.style.display = "flex";
@@ -7281,7 +7285,7 @@ let HERO_GRID_INSTANCE = null;
           <div class="ai-msg-assistant" style="background:var(--surface-white); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:18px; box-shadow:var(--shadow-sm);">
             <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
               <span style="width:24px; height:24px; border-radius:6px; background:var(--burnt-orange); color:#fff; display:inline-flex; align-items:center; justify-content:center; font-size:11px; font-weight:800;">AI</span>
-              <strong style="color:var(--chocolate); font-size:14px;">ChronoSync Scheduling Assistant Ready</strong>
+              <strong style="color:var(--chocolate); font-size:14px;">CampusNexus Scheduling Assistant Ready</strong>
               <span class="pill pill-approved" style="margin-left:auto; font-size:10px;">Deterministic Solver Linked</span>
             </div>
             <div style="font-size:13px; color:var(--text-muted); line-height:1.6;">
@@ -8234,11 +8238,17 @@ let HERO_GRID_INSTANCE = null;
       }
     }
 
-    // On Load: If already logged in, directly open Dashboard; otherwise show landing gateway
+    // Lifecycle Routing:
+    // 1) If user was inside the app and reloads/refreshes (same tab session) -> Stay directly in Dashboard!
+    // 2) If user closed the browser/tab and reopens anew -> Show Home/Landing screen with "Get Started" (No login prompt!)
     window.addEventListener("DOMContentLoaded", () => {
       loadAllData();
-      if (isUserAuthenticated()) {
-        document.documentElement.classList.add("user-authenticated");
+      const inApp = sessionStorage.getItem("campusnexus_entered_dashboard") === "true";
+      const authed = isUserAuthenticated();
+
+      if (authed && inApp) {
+        // Active session reload: keep user in Executive Dashboard
+        document.documentElement.classList.add("user-in-app");
         const gateway = document.getElementById("landingGateway");
         if (gateway) gateway.style.display = "none";
         const savedRole = localStorage.getItem("chronosync_user_role") || "admin";
@@ -8248,6 +8258,13 @@ let HERO_GRID_INSTANCE = null;
           initGridMotionBackground();
         }, 100);
       } else {
+        // Fresh browser visit or explicit Landing return: show Home screen with Get Started button
+        document.documentElement.classList.remove("user-in-app");
+        const gateway = document.getElementById("landingGateway");
+        if (gateway) {
+          gateway.style.display = "flex";
+          gateway.classList.remove("fade-out");
+        }
         initLandingGridMotion();
         updateLandingAuthState();
       }
