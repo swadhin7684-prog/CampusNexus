@@ -40,51 +40,96 @@ ChronoSync uses a bespoke, premium color system designed specifically for Chilik
 
 ---
 
-## 🏛️ System Architecture
+## 🏛️ End-to-End System Workflow & Architecture
 
 ```mermaid
 flowchart TD
-    subgraph UI ["ChronoSync Web Interface (http://127.0.0.1:8000)"]
-        D1[Executive Metrics & Validator Badge]
-        D2[Weekly Timetable Matrix: Group / Faculty / Room]
-        D3[Spectra Fest Bookings & Priority Breakdown]
-        D4[AI Natural Language Booking Assistant & Draft Editor]
-        D5[Manual Event Booking & Constraint Validation]
-        D6[Room Utilisation Heatmap & Free Room Finder]
-        D7[Midsem Examination Scheduler Grid]
-        D8[Disruption Simulator & Stability Diff Viewer]
-        D9[Admin Dataset Center & 1-Click Validator]
+    subgraph Deployment ["☁️ Deployment Pipeline (Vercel)"]
+        GH["GitHub Repository
+(swadhin7684-prog/CampusNexus)"]
+        VB["Vercel Build
+(uv + Python 3.12 + FastAPI)"]
+        LA["Live Application
+(campus-nexus-mu.vercel.app)"]
+        GH -->|Git Push origin main| VB
+        VB -->|Zero-Cold-Start Serverless| LA
     end
 
-    subgraph API ["FastAPI Modular Backend (Python 3.8+)"]
-        R1[/api/overview & /api/timetable]
-        R2[/api/bookings & /api/ai/parse-booking]
-        R3[/api/rooms/free & /api/bookings/manual]
-        R4[/api/exams]
-        R5[/api/disruptions/simulate & /apply]
-        R6[/api/validator/report]
-        R7[/api/demo/reset]
+    subgraph UsersLayer ["👥 Users & Role-Based Access"]
+        U1["Dean's Office (Admin)"]
+        U2["CSE Coordinator"]
+        U3["Faculty (F01–F40)"]
+        U4["Spectra Club Rep"]
+        Users["CIT Users & Evaluators"]
+        U1 & U2 & U3 & U4 --> Users
     end
 
-    subgraph Core ["Optimization & Reasoning Engines"]
-        E1["Google OR-Tools CP-SAT Solver (Parallel Workers)"]
-        E2["Spectra Week Priority Booking Optimizer"]
-        E3["Midsem Exam Seating & Hall Allocator (50% Cap Rule)"]
-        E4["Minimal-Churn Disruption Repair Engine"]
-        E5["Bilingual NLP Assistant (English & Hinglish)"]
+    subgraph FrontendLayer ["🖥️ Frontend Web UI (Single Page Application)"]
+        FUI["ChronoSync Web UI
+(HTML5, Responsive CSS, Vanilla JS)"]
+        subgraph Modules ["Operational Dashboards & Modules"]
+            M1["Executive Dashboard & 3D Campus Grid"]
+            M2["Master Timetable Grid (189 Sessions)"]
+            M3["Midsem Exam Scheduler (41 Exams)"]
+            M4["Spectra Fest & AI Assistant (25 Reqs)"]
+            M5["Disruption & Stability Repair Engine"]
+            M6["Room Utilisation & Finder (27 Venues)"]
+        end
+        FUI --> Modules
     end
 
-    subgraph Storage ["Dataset & Official Artifacts"]
-        DS1[(cit_public.json)]
-        EX1["exports/schedule.json (Zero Violations)"]
-        EX2["exports/schedule_after.json (Zero Time Changes)"]
-        VAL["validator.py (Official Checker)"]
+    subgraph BackendLayer ["⚡ Backend (FastAPI + Python 3.12)"]
+        API["FastAPI REST API Gateway
+(Authentication, Routes, Controllers)"]
+        Auth["JWT HS256 Authentication
+(Salted SHA-256 Passwords)"]
+        API --> Auth
+
+        subgraph CoreEngines ["Core Optimization & AI Engines"]
+            Solver["Google OR-Tools CP-SAT Solver
+(Timetable & Exam Generation)"]
+            BookingEng["Spectra Fest Priority Engine
+(Inversion-Free Category Allocator)"]
+            RepairEng["Disruption Repair Engine
+(Minimum Perturbation Stability)"]
+            AIAssist["Bilingual AI Assistant
+(NLP Intent Parsing & Rescheduling)"]
+        end
+        API --> CoreEngines
     end
 
-    UI <--> API
-    API <--> Core
-    Core --> Storage
-    Storage --> VAL
+    subgraph DataStorage ["💾 Data Storage & State"]
+        DS_Data["Institution Master Dataset
+(backend/data/cit_public.json)"]
+        DS_Sched["Timetables & Bookings
+(exports/schedule.json & schedule_after.json)"]
+        DS_Disrupt["Disruption Scenarios
+(backend/data/sample_disruption.json)"]
+    end
+
+    subgraph ValidationPipeline ["🛡️ Official Validator (Zero Violations Verification)"]
+        Validator["Official Validator
+(validator.py)"]
+        Audit["H1–H14 Hard Constraints & S1–S6 Soft Penalties
+Score: 100% Zero Violations | 65.5/70 Booking"]
+        Validator --> Audit
+    end
+
+    %% Workflow Interconnections
+    Users -->|Login & Interact| FUI
+    LA -.->|Delivers UI| FUI
+
+    FUI -->|Authenticated HTTP Requests (Bearer JWT)| API
+    API -->|JSON Responses & State Diffs| FUI
+
+    CoreEngines <-->|Read Data Models| DS_Data
+    CoreEngines -->|Write Optimized Schedules| DS_Sched
+    RepairEng <-->|Read Disruption Scenarios| DS_Disrupt
+
+    API -->|1-Click Run Validator| Validator
+    Validator <-->|Audit Dataset & Solution| DS_Data
+    Validator <-->|Audit Generated Output| DS_Sched
+    Audit -->|Return Validation Certificate| API
 ```
 
 ---
@@ -158,7 +203,7 @@ Exam soft penalty: 0
 ### 2. Disruption Repair Timetable
 ```bash
 python backend/app/validator.py --data backend/data/cit_public.json --schedule exports/schedule_after.json \
-  --disruption "requirements/CrunchWeek_StarterPack (1)/CrunchWeek_StarterPack/examples/sample_disruption.json" \
+  --disruption backend/data/sample_disruption.json \
   --baseline exports/schedule.json
 ```
 **Official Validator Output:**
