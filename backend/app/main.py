@@ -57,14 +57,10 @@ assets_dir = get_path("frontend/assets")
 if os.path.exists(assets_dir):
     app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
 
-grid_dir = get_path("frontend/Frontend_Grid_Pic")
-if os.path.exists(grid_dir):
-    app.mount("/Frontend_Grid_Pic", StaticFiles(directory=grid_dir), name="grid_pics")
-
 DATA_PATH = get_path("backend/data/cit_public.json")
 SCHEDULE_PATH = get_path("exports/schedule.json")
 SCHEDULE_AFTER_PATH = get_path("exports/schedule_after.json")
-DISRUPTION_PATH = get_path("requirements/CrunchWeek_StarterPack (1)/CrunchWeek_StarterPack/examples/sample_disruption.json")
+DISRUPTION_PATH = get_path("backend/data/sample_disruption.json")
 
 import shutil
 
