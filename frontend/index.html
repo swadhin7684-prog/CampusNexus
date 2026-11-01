@@ -245,31 +245,30 @@
 
     /* Top Application Bar - 100% Fixed at top with Glassmorphic Reflection */
     .top-bar {
-      height: 64px;
+      height: 56px;
       flex-shrink: 0;
-      background: rgba(255, 255, 255, 0.88);
+      background: rgba(255, 255, 255, 0.94);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--concrete-border);
-      padding: 0 24px;
+      padding: 0 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 16px;
-      overflow-x: auto;
-      overflow-y: hidden;
+      gap: 10px;
+      overflow: hidden; /* Fits on one clean line with no scroll/slide bar */
       z-index: 40;
-      box-shadow: 0 4px 20px -2px rgba(27, 34, 30, 0.05);
+      box-shadow: 0 2px 14px rgba(27, 34, 30, 0.05);
     }
     .breadcrumb-title {
-      font-size: 15px;
+      font-size: 13.5px;
       font-weight: 700;
       color: var(--chocolate);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       white-space: nowrap;
-      flex-shrink: 0;
-      min-width: max-content;
+      flex-shrink: 1;
+      min-width: 0;
     }
     .breadcrumb-title span {
       white-space: nowrap;
@@ -303,32 +302,35 @@
     .top-actions {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .top-actions .btn {
+      padding: 5px 12px;
+      font-size: 12px;
+      gap: 6px;
+      height: 32px;
+      white-space: nowrap;
+    }
+    .top-actions .btn svg {
+      width: 14px;
+      height: 14px;
     }
 
-    /* Role Profile Dropdown */
+    /* Role Profile Dropdown - Compact & No Black Dot */
     .role-box {
       display: flex;
       align-items: center;
       background: var(--cream-dark);
       border: 1px solid var(--concrete-border);
       border-radius: var(--radius-md);
-      padding: 4px 10px;
-      gap: 8px;
+      padding: 2px 8px;
+      height: 32px;
+      gap: 6px;
       box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
     }
     .role-avatar {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: var(--chocolate);
-      color: #0E180E;
-      border: 1px solid var(--sage-green);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 11px;
+      display: none !important; /* Removed black dot */
     }
 
     /* Button System with Realistic Bevels & Specular Highlights */
@@ -434,19 +436,17 @@
        Based on React Bits Grid Motion Engine & Netflix Showcase
        Atmospheric Verdane-Style Architectural Concrete & Foliage Lighting
        ---------------------------------------------------- */
-    /* Hero Banner: Metallic Reflective Sage Green (#9CAF88 RGB: 156, 175, 136) */
+    /* Hero Banner: Dark ChronoSync Theme matching Sidebar with Translucent Overlay for Grid Motion Visibility */
     .cinematic-hero {
       position: relative;
       border-radius: var(--radius-xl);
       overflow: hidden;
-      background: radial-gradient(circle at 85% 25%, rgba(204, 85, 0, 0.22) 0%, transparent 45%),
-                  radial-gradient(circle at 18% 82%, rgba(255, 255, 255, 0.45) 0%, transparent 42%),
-                  linear-gradient(135deg, #B5C5A5 0%, #9CAF88 36%, #889D75 72%, #758A63 100%);
+      background: linear-gradient(180deg, #131A16 0%, #1B221E 60%, #151C18 100%);
       margin-bottom: 28px;
-      box-shadow: 0 20px 50px -10px rgba(118, 139, 99, 0.42), 0 4px 14px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.7);
-      border-top: 2px solid rgba(255, 255, 255, 0.98);
-      border-bottom: 2px solid #5F734C;
+      box-shadow: 0 20px 50px -10px rgba(10, 15, 12, 0.65), 0 4px 14px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-top: 1px solid rgba(255, 255, 255, 0.22);
+      border-bottom: 2px solid #0D120F;
       min-height: 430px;
       display: flex;
       align-items: center;
@@ -697,15 +697,15 @@
       box-shadow: 0 0 8px #D5D9D2;
     }
 
-    /* Vignette & Gradient Overlays (Netflix-Style Cinematic Depth) */
+    /* Vignette & Gradient Overlays: Translucent Dark Overlays letting Grid Motion Shine Through */
     .hero-overlay {
       position: absolute;
       inset: 0;
       background: radial-gradient(
         circle at 25% 45%,
-        rgba(255, 255, 255, 0.22) 0%,
-        rgba(156, 175, 136, 0.35) 50%,
-        rgba(88, 108, 74, 0.65) 100%
+        rgba(19, 26, 22, 0.38) 0%,
+        rgba(27, 34, 30, 0.58) 55%,
+        rgba(15, 21, 18, 0.78) 100%
       );
       z-index: 1;
       pointer-events: none;
@@ -867,16 +867,17 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(255, 255, 255, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.95);
-      color: #8F3C00;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #FFB74D;
       padding: 4px 12px;
       border-radius: 999px;
       font-size: 11px;
       font-weight: 800;
       letter-spacing: 0.5px;
       text-transform: uppercase;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), inset 0 1px 0 #FFFFFF;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
     }
     .hero-college-badge {
       display: inline-flex;
@@ -888,10 +889,10 @@
     .hero-college-name {
       font-size: 15px;
       font-weight: 800;
-      color: #0E180E;
+      color: #FFFFFF;
       letter-spacing: 2px;
       text-transform: uppercase;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
     }
     .hero-college-crest {
       display: flex;
@@ -900,31 +901,31 @@
       width: 28px;
       height: 28px;
       border-radius: 8px;
-      background: var(--sage-green-soft);
-      border: 1px solid var(--sage-green);
-      color: #0E180E;
-      box-shadow: 0 0 14px var(--sage-green-glow), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      background: rgba(204, 85, 0, 0.25);
+      border: 1px solid rgba(204, 85, 0, 0.5);
+      color: #FFB74D;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
     }
     .hero-title {
       font-size: 38px;
       font-weight: 900;
       letter-spacing: -0.9px;
-      color: #0E180E;
+      color: #FFFFFF;
       line-height: 1.2;
       font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       margin-bottom: 14px;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85), 0 2px 10px rgba(0, 0, 0, 0.08);
+      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.75);
       max-width: 980px;
     }
     .hero-subtitle {
       font-size: 15px;
-      color: #1A281A;
-      font-weight: 600;
+      color: rgba(248, 244, 231, 0.88);
+      font-weight: 500;
       margin-top: 0;
       margin-bottom: 22px;
       line-height: 1.65;
       max-width: 860px;
-      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
     }
     .hero-actions {
       display: flex;
@@ -1841,17 +1842,9 @@
     .landing-stat-dot {
       color: rgba(255, 255, 255, 0.3);
     }
-    /* Photo Tile in Grid Motion */
+    /* Photo Tile in Grid Motion - Clean pure images without labels */
     .grid-motion-img-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 60%, rgba(0, 0, 0, 0.75) 100%);
-      padding: 8px 10px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      pointer-events: none;
-      z-index: 1;
+      display: none !important;
     }
     .grid-motion-img-tag {
       font-size: 8px;
@@ -2411,32 +2404,28 @@
         </div>
 
         <div class="top-actions">
-          <!-- Role Switcher -->
+          <!-- Role Switcher (Compact, without black dot) -->
           <div class="role-box">
-            <div class="role-avatar" id="userAvatar">🏛️</div>
-            <div>
-              <select id="roleSelect" onchange="switchRole(this.value)" style="border:none; background:transparent; font-weight:700; font-size:12px; color:var(--chocolate); cursor:pointer;">
-                <option value="admin">🏛️ Dean's Office (Admin) — Full Control</option>
-                <option value="coordinator">👨‍🏫 Prof. R. Mohanty (CSE Coordinator)</option>
-                <option value="faculty">🔬 Dr. S. K. Nayak (Faculty F07)</option>
-                <option value="club">🚀 Spectra Tech Club Rep</option>
-              </select>
-            </div>
+            <select id="roleSelect" onchange="switchRole(this.value)" style="border:none; background:transparent; font-weight:700; font-size:11.5px; color:var(--chocolate); cursor:pointer; outline:none;">
+              <option value="admin">🏛️ Dean's Office (Admin)</option>
+              <option value="coordinator">👨‍🏫 Prof. R. Mohanty (CSE)</option>
+              <option value="faculty">🔬 Dr. S. K. Nayak (Faculty)</option>
+              <option value="club">🚀 Spectra Tech Club Rep</option>
+            </select>
           </div>
 
           <button class="btn btn-outline" onclick="triggerRegenerateTimetable()" title="Solve timetable live with CP-SAT">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
-            Re-solve Schedule
+            Re-solve
           </button>
 
-          
-          <button class="btn btn-outline" onclick="openLandingGateway()" title="Return to Netflix-style Welcome Gateway" style="border-color:rgba(156,175,136,0.5); color:var(--forest-slate);">
+          <button class="btn btn-outline" onclick="openLandingGateway()" title="Return to Welcome Gateway" style="border-color:rgba(156,175,136,0.5); color:var(--forest-slate);">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-            Landing Screen
+            Landing
           </button>
           <button class="btn btn-danger" onclick="triggerResetDemo()" title="Judge requirement: Reset back to clean baseline state">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 2v6h6"></path><path d="M21 12A9 9 0 0 0 6 5.3L3 8"></path><path d="M21 22v-6h-6"></path><path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"></path></svg>
-            Reset Demo Data
+            Reset Demo
           </button>
         </div>
       </header>
@@ -2750,8 +2739,12 @@ Exam soft penalty: 0
                 Active User / Faculty Profile:
               </span>
               <select id="aiPersonaSelect" class="form-control" style="max-width:440px; font-size:12px; font-weight:600; padding:6px 12px; border-color:var(--chocolate);" onchange="updateAiPersona(this.value)">
-<option value="ADMIN">🏛️ Academic Administrator / Dean's Office</option>
-<option value="CLUB">🚀 Spectra Fest Coordinator / Club Lead</option>
+<optgroup label="── Official Leadership & Roles ──">
+  <option value="admin">🏛️ Dean Academic Affairs (Admin)</option>
+  <option value="coordinator">👨‍🏫 Prof. R. Mohanty (CSE Department Coordinator)</option>
+  <option value="F07">🔬 Dr. S. K. Nayak / Dr. Pooja Das (Faculty F07)</option>
+  <option value="club">🚀 Spectra Fest Coordinator / Club Lead</option>
+</optgroup>
 <optgroup label="── Department: Computer Science & Engineering (CSE) ──">
   <option value="F01">Dr. Ananya Mishra (F01, CSE)</option>
   <option value="F02">Dr. Rohit Sahoo (F02, CSE — CS101)</option>
@@ -5856,12 +5849,7 @@ Exam soft penalty: 0
             if (item && (item.img || item.src)) {
               const src = item.img || item.src;
               tileDiv.innerHTML = `
-                <img class="grid-motion-img" src="${src}" onerror="if(item.raw_img && this.src!==item.raw_img){this.src=item.raw_img;}" alt="${item.name || ''}" loading="lazy" />
-                <div class="grid-motion-img-overlay">
-                  <span class="grid-motion-img-tag">${item.badge || item.id || 'CIT'}</span>
-                  <div class="grid-motion-img-name">${item.name || ''}</div>
-                  ${item.type ? `<div class="grid-motion-img-sub">${item.type}</div>` : ''}
-                </div>
+                <img class="grid-motion-img" src="${src}" alt="" loading="lazy" />
               `;
             } else {
               tileDiv.innerHTML = (item && item.svg) ? item.svg : item;
@@ -6193,24 +6181,34 @@ Exam soft penalty: 0
 
     function switchRole(role) {
       APP.role = role;
-      const avatar = document.getElementById("userAvatar");
-      if (avatar) {
-        if (role === "admin") avatar.innerText = "🏛️";
-        else if (role === "coordinator" || role === "department_coordinator") avatar.innerText = "👨‍🏫";
-        else if (role === "club") avatar.innerText = "🚀";
-        else avatar.innerText = "🔬";
-      }
 
       const roleSelect = document.getElementById("roleSelect");
       if (roleSelect) roleSelect.value = role;
 
       const aiSel = document.getElementById("aiPersonaSelect");
       if (aiSel) {
-        if (role === "admin") aiSel.value = "admin";
-        else if (role === "coordinator" || role === "department_coordinator") aiSel.value = "coordinator";
-        else if (role === "club") aiSel.value = "club";
-        else if (role === "faculty") aiSel.value = "F07";
-        updateAiPersona(aiSel.value, false);
+        let target = "admin";
+        if (role === "admin") target = "admin";
+        else if (role === "coordinator" || role === "department_coordinator") target = "coordinator";
+        else if (role === "club") target = "club";
+        else if (role === "faculty") target = "F07";
+
+        for (let i = 0; i < aiSel.options.length; i++) {
+          const val = (aiSel.options[i].value || "").toLowerCase();
+          if (val === target.toLowerCase()) {
+            aiSel.selectedIndex = i;
+            break;
+          }
+        }
+        CURRENT_AI_PERSONA = aiSel.value;
+
+        const badge = document.getElementById("aiPersonaBadge");
+        if (badge) {
+          if (role === "admin") badge.innerText = "Dean's Office • Full Authority";
+          else if (role === "coordinator" || role === "department_coordinator") badge.innerText = "CSE Coordinator • Prof. R. Mohanty";
+          else if (role === "club") badge.innerText = "Spectra Fest • Club Lead";
+          else badge.innerText = "CSE • Dr. S. K. Nayak • Max 4h/day";
+        }
       }
 
       showToast(`Active CIT Role: ${role.replace('_', ' ').toUpperCase()}`, "info");
@@ -7135,21 +7133,22 @@ let HERO_GRID_INSTANCE = null;
       CURRENT_AI_PERSONA = val;
       const badge = document.getElementById("aiPersonaBadge");
       const topRoleSelect = document.getElementById("roleSelect");
+      const valStr = String(val || "").toLowerCase();
 
-      if (val === "admin") {
+      if (valStr === "admin") {
         if (badge) badge.innerText = "Dean's Office • Full Authority";
-        if (topRoleSelect && topRoleSelect.value !== "admin") topRoleSelect.value = "admin";
+        if (topRoleSelect) topRoleSelect.value = "admin";
         APP.role = "admin";
-      } else if (val === "coordinator") {
+      } else if (valStr === "coordinator") {
         if (badge) badge.innerText = "CSE Coordinator • Prof. R. Mohanty";
-        if (topRoleSelect && topRoleSelect.value !== "coordinator") topRoleSelect.value = "coordinator";
+        if (topRoleSelect) topRoleSelect.value = "coordinator";
         APP.role = "department_coordinator";
-      } else if (val === "club") {
+      } else if (valStr === "club") {
         if (badge) badge.innerText = "Spectra Fest • Club Lead";
-        if (topRoleSelect && topRoleSelect.value !== "club") topRoleSelect.value = "club";
+        if (topRoleSelect) topRoleSelect.value = "club";
         APP.role = "club";
       } else {
-        if (topRoleSelect && topRoleSelect.value !== "faculty") topRoleSelect.value = "faculty";
+        if (topRoleSelect) topRoleSelect.value = "faculty";
         APP.role = "faculty";
         const fac = (APP.overview?.faculty || []).find(f => f.id === val);
         if (badge) {
@@ -7162,9 +7161,6 @@ let HERO_GRID_INSTANCE = null;
           }
         }
       }
-
-      const avatar = document.getElementById("userAvatar");
-      if (avatar) avatar.innerText = APP.role ? APP.role[0].toUpperCase() : "U";
 
       if (notify) {
         const sel = document.getElementById("aiPersonaSelect");
