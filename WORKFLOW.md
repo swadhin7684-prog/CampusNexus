@@ -5,6 +5,10 @@
 
 ## 🏛️ 1. End-to-End System Workflow
 
+<p align="center">
+  <img src="docs/workflow.svg" alt="ChronoSync End-to-End System Workflow" width="100%"/>
+</p>
+
 ```mermaid
 flowchart TD
     subgraph Deployment ["☁️ Deployment Pipeline (Vercel)"]
@@ -204,3 +208,4 @@ flowchart LR
 ---
 
 *ChronoSync — One Campus. One Schedule. Zero Conflicts.*
+

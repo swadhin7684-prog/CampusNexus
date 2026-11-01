@@ -42,6 +42,10 @@ ChronoSync uses a bespoke, premium color system designed specifically for Chilik
 
 ## 🏛️ End-to-End System Workflow & Architecture
 
+<p align="center">
+  <img src="docs/workflow.svg" alt="ChronoSync End-to-End System Workflow" width="100%"/>
+</p>
+
 ```mermaid
 flowchart TD
     subgraph Deployment ["☁️ Deployment Pipeline (Vercel)"]
