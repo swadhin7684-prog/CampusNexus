@@ -1,0 +1,138 @@
+[
+  {
+    "id": "U-ADMIN",
+    "role": "admin",
+    "name": "Dean Academic Affairs (Admin)",
+    "email": "admin@cit.ac.in",
+    "password": "admin",
+    "department": "Dean's Office",
+    "faculty_id": "F37",
+    "avatar": "\ud83c\udfdb\ufe0f",
+    "can": [
+      "generate_timetable",
+      "approve_disruptions",
+      "approve_overrides",
+      "reset_demo_data",
+      "view_all"
+    ]
+  },
+  {
+    "id": "U-COORD",
+    "role": "department_coordinator",
+    "name": "Prof. R. Mohanty (CSE Coordinator)",
+    "email": "coordinator@cit.ac.in",
+    "password": "coord",
+    "department": "Computer Science & Engineering",
+    "faculty_id": "F01",
+    "avatar": "\ud83d\udc68\u200d\ud83c\udfeb",
+    "can": [
+      "request_session_changes",
+      "book_department_events",
+      "approve_lab_bookings"
+    ]
+  },
+  {
+    "id": "U-FAC-07",
+    "role": "faculty",
+    "name": "Dr. S. K. Nayak (Faculty F07)",
+    "email": "faculty@cit.ac.in",
+    "password": "prof",
+    "department": "Computer Science",
+    "faculty_id": "F07",
+    "avatar": "\ud83d\udd2c",
+    "can": [
+      "view_own_timetable",
+      "mark_unavailability",
+      "request_extra_sessions"
+    ]
+  },
+  {
+    "id": "U-FAC-08",
+    "role": "faculty",
+    "name": "Prof. Vikram Rao (Visiting Faculty F08)",
+    "email": "vikram.rao@cit.ac.in",
+    "password": "prof",
+    "department": "Computer Science (Visiting)",
+    "faculty_id": "F08",
+    "avatar": "\ud83d\udc68\u200d\ud83d\udcbb",
+    "can": [
+      "view_own_timetable",
+      "mark_unavailability",
+      "request_extra_sessions"
+    ]
+  },
+  {
+    "id": "U-FAC-19",
+    "role": "faculty",
+    "name": "Dr. Shalini Gupta (Math Faculty F19)",
+    "email": "shalini.gupta@cit.ac.in",
+    "password": "prof",
+    "department": "Mathematics",
+    "faculty_id": "F19",
+    "avatar": "\ud83d\udcd0",
+    "can": [
+      "view_own_timetable",
+      "mark_unavailability",
+      "request_extra_sessions"
+    ]
+  },
+  {
+    "id": "U-FAC-21",
+    "role": "faculty",
+    "name": "Dr. Lakshmi Reddy (Physics Faculty F21)",
+    "email": "lakshmi.reddy@cit.ac.in",
+    "password": "prof",
+    "department": "Physics",
+    "faculty_id": "F21",
+    "avatar": "\u26a1",
+    "can": [
+      "view_own_timetable",
+      "mark_unavailability",
+      "request_extra_sessions"
+    ]
+  },
+  {
+    "id": "U-CLUB",
+    "role": "club",
+    "name": "Chirag Sen (Spectra Tech Club Rep)",
+    "email": "club@cit.ac.in",
+    "password": "club",
+    "department": "Student Affairs / Gymkhana",
+    "avatar": "\ud83d\ude80",
+    "club_name": "Spectra Tech Club & Dramatics Society",
+    "can": [
+      "submit_venue_requests",
+      "cancel_requests",
+      "view_booking_status"
+    ]
+  },
+  {
+    "id": "U-STUDENT",
+    "role": "student",
+    "name": "Aarav Sharma (Y1-A Batch Rep)",
+    "email": "student@cit.ac.in",
+    "password": "student",
+    "department": "First Year Engineering (Y1-A)",
+    "avatar": "\ud83c\udf93",
+    "can": [
+      "view_batch_schedule",
+      "view_free_rooms",
+      "submit_society_queries"
+    ]
+  },
+  {
+    "id": "U-CIT-4110",
+    "name": "Swadhin Parida",
+    "email": "swadhinparida283@gmail.com",
+    "password": "sha256:f158ade76f11f461:d8cc2e72262e9da7b602bd076818a2c76d6f6967256d22e3c6cfa27f5dbb6aeb",
+    "role": "admin",
+    "department": "Dean's Office",
+    "faculty_id": null,
+    "avatar": "\ud83c\udfdb\ufe0f",
+    "can": [
+      "view_all",
+      "request_session_changes",
+      "submit_venue_requests"
+    ]
+  }
+]
