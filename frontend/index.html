@@ -1442,19 +1442,421 @@
       border: 1px solid var(--border-subtle);
     }
 
-    /* Responsive */
-    @media (max-width: 900px) {
-      html, body, .app-shell, .main-wrapper {
-        height: auto;
-        overflow: auto;
-      }
-      .app-shell { flex-direction: column; }
-      .sidebar { width: 100%; height: auto; position: static; }
-      .sidebar-menu { display: flex; flex-wrap: wrap; }
-      .nav-section { display: none; }
-      .top-bar { position: sticky; top: 0; }
-      .content-body { overflow-y: visible; height: auto; padding: 16px; }
+    /* ====================================================
+       CAMPUSNEXUS RESPONSIVE DESIGN SYSTEM (MOBILE & TABLET)
+       Preserves 100% desktop fidelity while making phones & tablets seamless
+       ==================================================== */
+    
+    /* Mobile Navigation Drawer Toggle & Close Buttons */
+    .mobile-menu-btn {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid var(--concrete-border);
+      background: var(--surface-white);
+      color: var(--chocolate);
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
+    .mobile-menu-btn:hover {
+      background: var(--cream-dark);
+      border-color: var(--burnt-orange);
+      color: var(--burnt-orange);
+    }
+    .mobile-sidebar-close {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.08);
+      color: #FFFFFF;
+      cursor: pointer;
+      margin-left: auto;
+      transition: all 0.15s ease;
+    }
+    .mobile-sidebar-close:hover {
+      background: rgba(239, 68, 68, 0.25);
+      border-color: rgba(239, 68, 68, 0.6);
+      color: #FCA5A5;
+    }
+    .sidebar-backdrop {
+      display: none;
+    }
+
+    @media (max-width: 900px) {
+      /* App Shell & Main Wrapper maintain full viewport without stacked sidebar */
+      .app-shell {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+      }
+      .main-wrapper {
+        width: 100vw;
+        height: 100vh;
+        flex: 1;
+        overflow: hidden;
+      }
+
+      /* Sidebar transforms into an Off-Canvas Sliding Drawer */
+      .sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        bottom: 0 !important;
+        width: 290px !important;
+        max-width: 84vw !important;
+        height: 100vh !important;
+        z-index: 99999 !important;
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1) !important;
+        box-shadow: 14px 0 45px rgba(10, 15, 12, 0.7) !important;
+        display: flex !important;
+        flex-direction: column !important;
+      }
+      .sidebar.mobile-open {
+        transform: translateX(0) !important;
+      }
+
+      /* Sliding Drawer Backdrop */
+      .sidebar-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(14, 20, 16, 0.68);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        z-index: 99998;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+      }
+      .sidebar-backdrop.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      /* Mobile Toggle Controls */
+      .mobile-menu-btn {
+        display: inline-flex !important;
+      }
+      .mobile-sidebar-close {
+        display: inline-flex !important;
+      }
+
+      /* Topbar Mobile Optimization */
+      .top-bar {
+        height: 52px !important;
+        padding: 0 10px !important;
+        gap: 8px !important;
+      }
+      .desktop-breadcrumb {
+        display: none !important;
+      }
+      #currentViewName {
+        font-size: 13.5px !important;
+        font-weight: 800 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        max-width: 120px !important;
+      }
+      .top-actions {
+        gap: 6px !important;
+      }
+      .top-actions .btn {
+        padding: 4px 8px !important;
+        font-size: 11px !important;
+        height: 30px !important;
+        gap: 4px !important;
+      }
+      .role-box select {
+        font-size: 11px !important;
+        max-width: 130px !important;
+      }
+
+      /* Content Body on Mobile */
+      .content-body {
+        height: calc(100vh - 52px) !important;
+        padding: 14px 12px 60px 12px !important;
+      }
+
+      /* Dashboard Hero Banner on Mobile */
+      .cinematic-hero {
+        min-height: auto !important;
+        margin-bottom: 16px !important;
+        border-radius: var(--radius-lg) !important;
+      }
+      .hero-content {
+        padding: 16px 14px 18px 14px !important;
+      }
+      .hero-top-row {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 8px !important;
+        margin-top: 0 !important;
+        margin-bottom: 12px !important;
+      }
+      .hero-pill-btn {
+        font-size: 11px !important;
+        padding: 4px 10px !important;
+        width: 100% !important;
+        justify-content: center !important;
+      }
+      .hero-tag {
+        font-size: 9.5px !important;
+        padding: 4px 8px !important;
+        width: 100% !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
+      }
+      .hero-college-badge {
+        gap: 6px !important;
+        font-size: 11px !important;
+        flex-wrap: wrap !important;
+        margin-bottom: 8px !important;
+      }
+      .hero-college-name {
+        font-size: 13px !important;
+      }
+      .hero-title {
+        font-size: clamp(18px, 5.2vw, 24px) !important;
+        line-height: 1.25 !important;
+        margin-bottom: 8px !important;
+      }
+      .hero-subtitle {
+        font-size: 12px !important;
+        line-height: 1.45 !important;
+        margin-bottom: 14px !important;
+      }
+      .hero-actions {
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 8px !important;
+      }
+      .hero-actions .btn {
+        width: 100% !important;
+        justify-content: center !important;
+        font-size: 12px !important;
+        padding: 9px 12px !important;
+        white-space: normal !important;
+        text-align: center !important;
+      }
+
+      /* Metrics Grid (2 columns on mobile) */
+      .metric-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+        margin-bottom: 16px !important;
+      }
+      .metric-card {
+        padding: 12px 14px !important;
+      }
+      .metric-label {
+        font-size: 11px !important;
+      }
+      .metric-value {
+        font-size: 20px !important;
+        margin: 4px 0 !important;
+      }
+      .metric-subtext {
+        font-size: 10px !important;
+      }
+
+      /* Dashboard Two-Column Layout Stacks Vertically */
+      .dashboard-two-col {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+      }
+      .val-stats-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+      }
+
+      /* Tables & Cards Mobile Optimization */
+      .card {
+        padding: 14px 12px !important;
+        border-radius: var(--radius-md) !important;
+        margin-bottom: 14px !important;
+      }
+      .card-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 10px !important;
+      }
+      .table-container {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        width: 100% !important;
+        display: block !important;
+      }
+      .table-container table {
+        min-width: 580px !important;
+      }
+
+      /* Timetable Controls */
+      #view-timetable .card-header > div {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        width: 100% !important;
+      }
+      #ttTargetSelect {
+        width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      /* Manual Booking Form */
+      .form-row-2col, .form-row-3col {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+      }
+      #mbRoomChipsGrid {
+        grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)) !important;
+      }
+
+      /* Modals */
+      .auth-modal-card {
+        width: calc(100vw - 24px) !important;
+        padding: 18px 16px !important;
+        border-radius: 16px !important;
+        max-height: 90vh !important;
+        overflow-y: auto !important;
+      }
+      .ambient-header {
+        padding: 12px 14px !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 8px !important;
+      }
+      .ambient-controls {
+        width: 100% !important;
+        justify-content: space-between !important;
+      }
+
+      /* Toast Notification */
+      .toast-container {
+        right: 12px !important;
+        bottom: 16px !important;
+        left: 12px !important;
+        width: auto !important;
+      }
+    }
+
+    /* Small phone optimizations (<= 480px, iPhone SE, iPhone 16) */
+    @media (max-width: 480px) {
+      .top-actions .btn .btn-text {
+        display: none !important;
+      }
+      .top-actions .btn {
+        padding: 4px 6px !important;
+      }
+      .top-actions .btn svg {
+        margin: 0 !important;
+      }
+      #currentViewName {
+        max-width: 95px !important;
+      }
+      .role-box select {
+        max-width: 105px !important;
+      }
+    }
+
+    /* ====================================================
+       LANDING GATEWAY MOBILE RESPONSIVE OPTIMIZATIONS
+       ==================================================== */
+    @media (max-width: 768px) {
+      .landing-header {
+        padding: 12px 14px !important;
+        gap: 8px !important;
+      }
+      .landing-brand {
+        gap: 8px !important;
+      }
+      .landing-brand-logo {
+        width: 34px !important;
+        height: 34px !important;
+        border-radius: 8px !important;
+      }
+      .landing-brand-logo svg {
+        width: 18px !important;
+        height: 18px !important;
+      }
+      .landing-brand-title {
+        font-size: 18px !important;
+        letter-spacing: 1px !important;
+      }
+      .landing-brand-sub {
+        font-size: 7.5px !important;
+        letter-spacing: 0.8px !important;
+      }
+      .landing-header-actions {
+        gap: 6px !important;
+      }
+      .landing-lang-pill {
+        padding: 5px 8px !important;
+        font-size: 11px !important;
+        gap: 4px !important;
+      }
+      .landing-btn-signin-top {
+        padding: 5px 12px !important;
+        font-size: 12px !important;
+      }
+
+      .landing-hero-center {
+        padding: 8px 14px 45px 14px !important;
+      }
+      .landing-badge {
+        font-size: 9px !important;
+        letter-spacing: 0.4px !important;
+        padding: 4px 10px !important;
+        margin-bottom: 12px !important;
+        max-width: 92vw !important;
+        white-space: normal !important;
+        text-align: center !important;
+      }
+      .landing-main-title {
+        font-size: clamp(24px, 7vw, 36px) !important;
+        letter-spacing: -0.5px !important;
+        line-height: 1.15 !important;
+        margin-bottom: 10px !important;
+      }
+      .landing-main-tagline {
+        font-size: clamp(14px, 4vw, 18px) !important;
+        margin-bottom: 10px !important;
+      }
+      .landing-main-subtext {
+        font-size: 12.5px !important;
+        line-height: 1.5 !important;
+        margin-bottom: 18px !important;
+        max-width: 92vw !important;
+        padding: 0 4px !important;
+      }
+      .landing-btn-getstarted {
+        padding: 12px 22px !important;
+        font-size: 15px !important;
+        max-width: 88vw !important;
+      }
+      .landing-btn-auth {
+        padding: 10px 16px !important;
+        font-size: 13px !important;
+      }
+      .landing-footer-strip {
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 6px 10px !important;
+        padding: 8px 12px !important;
+        font-size: 10.5px !important;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .grid-motion-col { animation: none !important; }
       .lattice-node { animation: none !important; }
@@ -2341,10 +2743,16 @@
             <polyline points="12 6 12 12 16 14"></polyline>
           </svg>
         </div>
-        <div>
+        <div style="flex:1;">
           <div class="brand-title">CampusNexus</div>
           <div class="brand-subtitle" style="letter-spacing:0.4px;">Chilika Institute of Technology</div>
         </div>
+        <button class="mobile-sidebar-close" onclick="closeMobileSidebar()" aria-label="Close Navigation Menu">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
       </div>
 
       <div class="sidebar-menu">
@@ -2412,17 +2820,29 @@
       </div>
     </aside>
 
+    <!-- Mobile Sidebar Backdrop Overlay -->
+    <div id="sidebarBackdrop" class="sidebar-backdrop" onclick="closeMobileSidebar()"></div>
+
     <!-- Main Content Wrapper -->
     <div class="main-wrapper">
       <!-- Top Application Bar -->
       <header class="top-bar">
-        <div class="breadcrumb-title">
-          <span style="font-weight:800; color:var(--chocolate); display:inline-flex; align-items:center; gap:6px;">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
-            Chilika Institute of Technology
-          </span>
-          <span style="color:var(--text-muted); opacity:0.5; margin:0 4px;">/</span>
-          <span id="currentViewName" style="color:var(--burnt-orange); font-weight:700;">Executive Dashboard</span>
+        <div style="display:flex; align-items:center; gap:8px; min-width:0; flex-shrink:1;">
+          <button id="mobileMenuBtn" class="mobile-menu-btn" onclick="toggleMobileSidebar()" aria-label="Open Navigation Menu">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          <div class="breadcrumb-title">
+            <span class="desktop-breadcrumb" style="font-weight:800; color:var(--chocolate); display:inline-flex; align-items:center; gap:6px;">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+              Chilika Institute of Technology
+            </span>
+            <span class="desktop-breadcrumb" style="color:var(--text-muted); opacity:0.5; margin:0 4px;">/</span>
+            <span id="currentViewName" style="color:var(--burnt-orange); font-weight:700;">Executive Dashboard</span>
+          </div>
         </div>
 
         <div class="top-actions">
@@ -2438,16 +2858,16 @@
 
           <button class="btn btn-outline" onclick="triggerRegenerateTimetable()" title="Solve timetable live with CP-SAT">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
-            Re-solve
+            <span class="btn-text">Re-solve</span>
           </button>
 
           <button class="btn btn-outline" onclick="openLandingGateway()" title="Return to Welcome Gateway" style="border-color:rgba(156,175,136,0.5); color:var(--forest-slate);">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-            Landing
+            <span class="btn-text">Landing</span>
           </button>
           <button class="btn btn-danger" onclick="triggerResetDemo()" title="Judge requirement: Reset back to clean baseline state">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 2v6h6"></path><path d="M21 12A9 9 0 0 0 6 5.3L3 8"></path><path d="M21 22v-6h-6"></path><path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"></path></svg>
-            Reset Demo
+            <span class="btn-text">Reset Demo</span>
           </button>
         </div>
       </header>
@@ -2488,7 +2908,7 @@
 
               <h1 class="hero-title">One Campus. One Schedule. Zero Conflicts.</h1>
               <p class="hero-subtitle">
-                ChronoSync autonomously orchestrates 189 course sessions, 41 midsem examination halls with half-capacity rules, and 25 Spectra Fest venue allocations across 27 campus facilities with mathematically guaranteed zero hard violations.
+                CampusNexus autonomously orchestrates 189 course sessions, 41 midsem examination halls with half-capacity rules, and 25 Spectra Fest venue allocations across 27 campus facilities with mathematically guaranteed zero hard violations.
               </p>
               <div class="hero-actions">
                 <button class="btn btn-orange" onclick="triggerRunValidator()">
@@ -2554,7 +2974,7 @@
           </div>
 
           <!-- Two Column Operational Panels -->
-          <div style="display:grid; grid-template-columns: 1.6fr 1fr; gap:24px;">
+          <div class="dashboard-two-col" style="display:grid; grid-template-columns: 1.6fr 1fr; gap:24px;">
             <!-- Official Validator Certification Card -->
             <div class="card">
               <div class="card-header">
@@ -2568,7 +2988,7 @@
                 <span class="pill pill-approved" style="font-size:12px; padding:4px 12px;">100% Passed (0 Violations)</span>
               </div>
 
-              <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin-bottom:18px;">
+              <div class="val-stats-grid" style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin-bottom:18px;">
                 <div style="background:var(--cream); padding:12px; border-radius:var(--radius-md); border:1px solid var(--cream-border);">
                   <div style="font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Hard Errors</div>
                   <div style="font-size:22px; font-weight:800; color:var(--chocolate);" id="valHardStat">0</div>
@@ -2905,7 +3325,7 @@ Exam soft penalty: 0
                 <label class="form-label">Event Title</label>
                 <input type="text" id="mbTitle" class="form-control" required placeholder="e.g. Industry Expert Guest Lecture on Quantum Computing">
               </div>
-              <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+              <div class="form-row-2col" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
                 <div class="form-group">
                   <label class="form-label">Requester Name</label>
                   <input type="text" id="mbRequester" class="form-control" required value="Prof. R. Mohanty">
@@ -2916,7 +3336,7 @@ Exam soft penalty: 0
                 </div>
               </div>
 
-              <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:10px;">
+              <div class="form-row-3col" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:10px;">
                 <div class="form-group">
                   <label class="form-label">Day</label>
                   <select id="mbDay" class="form-control" onchange="updateManualBookingRoomAvailability()">
@@ -6664,9 +7084,28 @@ let HERO_GRID_INSTANCE = null;
       GLOBAL_SWIPE_TOAST_MGR.show(msg, type);
     }
 
+    // Mobile Drawer Navigation Controllers
+    function toggleMobileSidebar() {
+      const sb = document.querySelector('.sidebar');
+      const bd = document.getElementById('sidebarBackdrop');
+      if (!sb) return;
+      const isOpen = sb.classList.toggle('mobile-open');
+      if (bd) bd.classList.toggle('active', isOpen);
+    }
+
+    function closeMobileSidebar() {
+      const sb = document.querySelector('.sidebar');
+      const bd = document.getElementById('sidebarBackdrop');
+      if (sb) sb.classList.remove('mobile-open');
+      if (bd) bd.classList.remove('active');
+    }
+
     // Navigation Switcher
     function navigate(viewId, btn) {
       APP.activeView = viewId;
+      if (typeof closeMobileSidebar === 'function') {
+        closeMobileSidebar();
+      }
       document.querySelectorAll(".view-panel").forEach(p => p.style.display = "none");
       document.querySelectorAll(".nav-item").forEach(i => i.classList.remove("active"));
       
